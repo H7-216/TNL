@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrefour Pro Tools</title>
+
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://unpkg.com/@zxing/library@0.19.3/umd/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+  <style>
+    /* ============================================================
+       RESET & VARIABLES
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:    #0074D4;
+      --blue2:   #005BAC;
+      --red:     #E4002B;
+      --dark:    #0A0E1A;
+      --card:    rgba(255,255,255,0.06);
+      --border:  rgba(255,255,255,0.12);
+      --text:    #F0F4FF;
+      --muted:   rgba(240,244,255,0.5);
+      --success: #00E676;
+      --warn:    #FFD600;
+      --r:       14px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ============================================================
+       THREE.JS CANVAS
+    ============================================================ */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       APP SHELL
+    ============================================================ */
+    #app {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============================================================
+       HEADER / NAV
+    ============================================================ */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 64px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--blue), var(--red));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    nav {
+      display: flex;
+      gap: 4px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 4px;
+    }
+
+    nav button {
+      all: unset;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: all .25s;
+      white-space: nowrap;
+    }
+
+    nav button.active {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(0,116,212,0.4);
+    }
+
+    nav button:not(.active):hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* ============================================================
+       PAGES
+    ============================================================ */
+    .page {
+      display: none;
+      flex: 1;
+      padding: 28px 24px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .page.active { display: block; }
+
+    h1.page-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      background: linear-gradient(90deg, #fff, var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+    }
+
+    /* ============================================================
+       CARDS
+    ============================================================ */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 22px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .card + .card { margin-top: 18px; }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      letter-spacing: 0.2px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(0,116,212,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,116,212,0.5);
+    }
+
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--red), #a50020);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(228,0,43,0.35);
+    }
+
+    .btn-danger:hover { transform: translateY(-2px); }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover { background: rgba(255,255,255,0.14); }
+
+    .btn-success {
+      background: linear-gradient(135deg, #00a854, #007a40);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(0,168,84,0.35);
+    }
+
+    .btn-success:hover { transform: translateY(-2px); }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* ============================================================
+       FORM ELEMENTS
+    ============================================================ */
+    label.field-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 15px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border .2s, box-shadow .2s;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0,116,212,0.2);
+    }
+
+    select option { background: #1a2035; color: #fff; }
+
+    .field { margin-bottom: 16px; }
+
+    .row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+    .row .field { flex: 1; min-width: 160px; }
+
+    /* ============================================================
+       BADGES / TAGS
+    ============================================================ */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-blue  { background: rgba(0,116,212,0.25); color: #5db8ff; }
+    .badge-green { background: rgba(0,230,118,0.2);  color: #00e676; }
+    .badge-red   { background: rgba(228,0,43,0.2);   color: #ff6b6b; }
+    .badge-warn  { background: rgba(255,214,0,0.2);  color: #ffd600; }
+
+    /* ============================================================
+       TOAST
+    ============================================================ */
+    #toast-container {
+      position: fixed;
+      bottom: 28px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: rgba(20,28,50,0.95);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      max-width: 320px;
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
+    .toast.success { border-color: var(--success); color: var(--success); }
+    .toast.error   { border-color: var(--red);     color: #ff6b6b; }
+    .toast.info    { border-color: var(--blue);    color: #5db8ff; }
+
+    /* ============================================================
+       PAGE 1 — SCANNER
+    ============================================================ */
+    #scanner-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto 20px;
+      border-radius: var(--r);
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 4/3;
+      border: 2px solid var(--blue);
+      box-shadow: 0 0 30px rgba(0,116,212,0.3);
+    }
+
+    #scanner-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #scanner-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .scan-frame {
+      width: 72%;
+      height: 55%;
+      border: 2px solid rgba(0,230,118,0.8);
+      border-radius: 8px;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.45);
+      position: relative;
+    }
+
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00e676, transparent);
+      animation: scanAnim 2s ease-in-out infinite;
+    }
+
+    @keyframes scanAnim {
+      0%   { top: 0%; }
+      50%  { top: calc(100% - 2px); }
+      100% { top: 0%; }
+    }
+
+    .corner {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-color: #00e676;
+      border-style: solid;
+    }
+    .corner.tl { top: -2px; left: -2px; border-width: 3px 0 0 3px; }
+    .corner.tr { top: -2px; right: -2px; border-width: 3px 3px 0 0; }
+    .corner.bl { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; }
+    .corner.br { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; }
+
+    #scanner-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(0,0,0,0.7);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    #scanner-placeholder .icon { font-size: 3rem; }
+
+    #scanner-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    /* Product result card */
+    #product-result {
+      display: none;
+    }
+
+    .product-card {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .product-img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .product-info { flex: 1; min-width: 0; }
+
+    .product-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .product-brand {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .product-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .nutri-score {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .nutri-a { background: #00843d; }
+    .nutri-b { background: #85bb2f; }
+    .nutri-c { background: #fecb02; color: #000; }
+    .nutri-d { background: #f07e04; }
+    .nutri-e { background: #e63312; }
+
+    #scan-history {
+      margin-top: 8px;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .history-item:hover { background: rgba(255,255,255,0.08); }
+
+    .history-item-name { font-weight: 600; font-size: 0.9rem; }
+    .history-item-code { font-size: 0.78rem; color: var(--muted); font-family: monospace; }
+    .history-item-time { font-size: 0.75rem; color: var(--muted); white-space: nowrap; margin-left: 12px; }
+
+    /* ============================================================
+       PAGE 2 — BARCODE GENERATOR
+    ============================================================ */
+    .format-info {
+      background: rgba(0,116,212,0.12);
+      border: 1px solid rgba(0,116,212,0.3);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #a8d4ff;
+      margin-bottom: 20px;
+    }
+
+    .format-info strong { color: #fff; }
+
+    #barcode-preview {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .barcode-wrap {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      display: inline-block;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    #barcode-svg { display: block; }
+
+    .barcode-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Barcode History */
+    #barcode-history-list { margin-top: 4px; }
+
+    .bc-history-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .bc-history-item:hover { background: rgba(255,255,255,0.08); }
+
+    .bc-thumb {
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .bc-thumb svg { display: block; }
+
+    .bc-info { flex: 1; min-width: 0; }
+
+    .bc-name { font-weight: 700; font-size: 0.92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bc-code { font-size: 0.78rem; color: var(--muted); font-family: monospace; letter-spacing: 1px; }
+
+    .bc-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    .icon-btn {
+      all: unset;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: background .2s;
+    }
+
+    .icon-btn:hover { background: rgba(255,255,255,0.16); }
+    .icon-btn.del:hover { background: rgba(228,0,43,0.3); }
+
+    /* ============================================================
+       PAGE 3 — PROMO CALCULATOR
+    ============================================================ */
+    .promo-result-box {
+      display: none;
+      background: linear-gradient(135deg, rgba(0,116,212,0.15), rgba(228,0,43,0.08));
+      border: 1px solid rgba(0,116,212,0.4);
+      border-radius: var(--r);
+      padding: 28px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .promo-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .promo-original {
+      font-size: 1.1rem;
+      color: var(--muted);
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+
+    .promo-final {
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--success);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .promo-saving {
+      font-size: 1rem;
+      color: var(--warn);
+      font-weight: 700;
+    }
+
+    .quick-discounts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .quick-disc-btn {
+      all: unset;
+      cursor: pointer;
+      padding: 7px 16px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all .2s;
+      color: var(--text);
+    }
+
+    .quick-disc-btn:hover,
+    .quick-disc-btn.selected {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0,116,212,0.35);
+    }
+
+    .promo-history-list { margin-top: 8px; }
+
+    .promo-history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      margin-bottom: 6px;
+    }
+
+    .phi-name { font-weight: 600; font-size: 0.9rem; }
+    .phi-detail { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+    .phi-final { font-weight: 800; color: var(--success); font-size: 1rem; }
+
+    /* ============================================================
+       UTILITY
+    ============================================================ */
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 16px;
+    }
+
+    /* Fullscreen barcode modal */
+    #bc-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #bc-modal.open { display: flex; }
+
+    .bc-modal-inner {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      max-width: 90vw;
+    }
+
+    .bc-modal-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #000;
+      margin-top: 14px;
+      margin-bottom: 4px;
+    }
+
+    .bc-modal-code {
+      font-size: 0.85rem;
+      color: #555;
+      font-family: monospace;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .bc-modal-close {
+      all: unset;
+      cursor: pointer;
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 1.5rem;
+      color: var(--text);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      nav button { padding: 7px 12px; font-size: 0.78rem; }
+      header { padding: 0 14px; }
+      .page { padding: 18px 14px 60px; }
+      h1.page-title { font-size: 1.35rem; }
+      .product-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- THREE.JS CANVAS BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- BARCODE FULLSCREEN MODAL -->
+<div id="bc-modal">
+  <button class="bc-modal-close" onclick="closeBcModal()">✕</button>
+  <div class="bc-modal-inner">
+    <svg id="bc-modal-svg"></svg>
+    <div class="bc-modal-name" id="bc-modal-name"></div>
+    <div class="bc-modal-code" id="bc-modal-code"></div>
+    <button class="btn btn-primary" onclick="closeBcModal()">Fermer</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🛒</div>
+      <span>Carrefour <strong>Pro</strong></span>
+    </div>
+    <nav>
+      <button id="nav-scanner"   onclick="switchPage('scanner')"   class="active">📷 Scanner</button>
+      <button id="nav-barcode"   onclick="switchPage('barcode')"  >🔢 Codes-barres</button>
+      <button id="nav-promo"     onclick="switchPage('promo')"    >🏷️ Promos</button>
+    </nav>
+  </header>
+
+  <!-- ====================================================
+       PAGE 1 — SCANNER DE PRODUITS
+  ==================================================== -->
+  <div id="page-scanner" class="page active">
+    <h1 class="page-title">Scanner un produit</h1>
+    <p class="page-sub">Pointez la caméra vers un code-barre Carrefour pour identifier le produit instantanément.</p>
+
+    <!-- Camera -->
+    <div id="scanner-wrap">
+      <video id="scanner-video" autoplay muted playsinline></video>
+      <div id="scanner-overlay">
+        <div class="scan-frame">
+          <div class="scan-line"></div>
+          <div class="corner tl"></div>
+          <div class="corner tr"></div>
+          <div class="corner bl"></div>
+          <div class="corner br"></div>
+        </div>
+      </div>
+      <div id="scanner-placeholder">
+        <div class="icon">📷</div>
+        <div>Cliquez sur <strong>Démarrer</strong> pour activer la caméra</div>
+      </div>
+    </div>
+
+    <div id="scanner-controls">
+      <button class="btn btn-primary" id="btn-start-scan" onclick="startScanner()">▶ Démarrer la caméra</button>
+      <button class="btn btn-danger"  id="btn-stop-scan"  onclick="stopScanner()" style="display:none">⏹ Arrêter</button>
+      <button class="btn btn-ghost"   onclick="manualLookup()">🔍 Saisie manuelle</button>
+    </div>
+
+    <!-- Manual barcode input -->
+    <div class="card" id="manual-lookup-card" style="display:none; margin-bottom:18px;">
+      <div class="row">
+        <div class="field">
+          <label class="field-label">Code-barre (EAN-13)</label>
+          <input type="text" id="manual-barcode" placeholder="Ex: 3017620422003" maxlength="18" />
+        </div>
+        <button class="btn btn-primary" onclick="lookupProduct(document.getElementById('manual-barcode').value)" style="flex-shrink:0">Rechercher</button>
+      </div>
+    </div>
+
+    <!-- Product result -->
+    <div id="product-result">
+      <div class="section-title">Résultat</div>
+      <div class="card">
+        <div id="product-loading" class="loading-text" style="display:none">
+          <div class="spinner"></div> Recherche du produit...
+        </div>
+        <div id="product-content" style="display:none">
+          <div class="product-card">
+            <img id="prod-img" class="product-img" src="" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'90\' height=\'90\'%3E%3Crect fill=\'%23111\' width=\'90\' height=\'90\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23555\' font-size=\'28\'%3E📦%3C/text%3E%3C/svg%3E'" />
+            <div class="product-info">
+              <div class="product-name" id="prod-name">-</div>
+              <div class="product-brand" id="prod-brand">-</div>
+              <div class="product-meta">
+                <span class="badge badge-blue" id="prod-code">-</span>
+                <span id="prod-nutri"></span>
+                <span class="badge badge-warn" id="prod-quantity"></span>
+              </div>
+              <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn btn-success" onclick="saveToScanHistory()" id="btn-save-scan">💾 Enregistrer</button>
+                <button class="btn btn-ghost"   onclick="addToBarcodesFromScan()">➕ Ajouter aux codes-barres</button>
+              </div>
+            </div>
+          </div>
+          <!-- Nutrients -->
+          <div id="prod-nutrients" style="margin-top:16px; display:none">
+            <div class="section-title" style="margin-bottom:10px">Valeurs nutritionnelles (100g)</div>
+            <div id="prod-nutrients-list" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+          </div>
+        </div>
+        <div id="product-not-found" style="display:none">
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <div>Produit non trouvé dans la base Open Food Facts.</div>
+            <div style="margin-top:8px; font-size:0.8rem;">Essayez de scanner à nouveau ou vérifiez le code.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scan history -->
+    <div style="margin-top:28px;">
+      <div class="section-title">Historique des scans</div>
+      <div id="scan-history">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <div>Aucun scan enregistré</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ====================================================
+       PAGE 2 — GÉNÉRATEUR DE CODES-BARRES
+  ==================================================== -->
+  <div id="page-barcode" class="page">
+    <h1 class="page-title">Générateur de codes-barres</h1>
+    <p class="page-sub">Entrez les chiffres visibles sur un produit → générez un code-barre lisible par scanner → sauvegardé pour usage futur.</p>
+
+    <div class="format-info">
+      <strong>Format Carrefour :</strong> Les produits Carrefour utilisent majoritairement le standard <strong>EAN-13</strong> (13 chiffres).
+      Commençant par <strong>30–37</strong> (France), ex: <code>3560070976423</code>. Les marques propres Carrefour commencent souvent par <strong>3560</strong>.
+      Vous pouvez aussi utiliser <strong>EAN-8</strong> (8 chiffres) ou <strong>Code 128</strong> (numéro interne).
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div class="field">
+          <label class="field-label">Nom du produit</label>
+          <input type="text" id="bc-product-name" placeholder="Ex: Chocolat noir Carrefour 200g" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label class="field-label">Chiffres du code-barre</label>
+          <input type="text" id="bc-digits" placeholder="Ex: 3560070976423" maxlength="20"
+                 oninput="autoDetectFormat(this.value)" />
+        </div>
+        <div class="field" style="max-width:160px;">
+          <label class="field-label">Format</label>
+          <select id="bc-format">
+            <option value="EAN13">EAN-13 (13 chiffres)</option>
+            <option value="EAN8">EAN-8 (8 chiffres)</option>
+            <option value="CODE128">Code 128 (libre)</option>
+            <option value="UPC">UPC-A (12 chiffres)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="generateBarcode()">⚡ Générer le code-barre</button>
+        <button class="btn btn-ghost" onclick="clearBarcodeForm()">✕ Effacer</button>
+      </div>
+
+      <!-- Preview -->
+      <div id="barcode-preview">
+        <div style="margin-top:22px; text-align:center;">
+          <div class="barcode-wrap">
+            <svg id="barcode-svg"></svg>
+          </div>
+        </div>
+        <div class="barcode-actions" style="justify-content:center;">
+          <button class="btn btn-success" onclick="saveBarcodeToHistory()">💾 Enregistrer dans l'historique</button>
+          <button class="btn btn-ghost"   onclick="printBarcode()">🖨️ Imprimer</button>
+          <button class="btn btn-ghost"   onclick="downloadBarcode()">⬇️ Télécharger PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div style="margin-top:28px;">
+      <div class="section-title">Codes-barres enregistrés</div>
+      <div id="barcode-history-list">
+        <div class="empty-state">
+          <div class="empty-icon">🔢</div>
+          <div>Aucun code-barre enregistré</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ====================================================
+       PAGE 3 — CALCULATEUR DE PROMOS
+  ==================================================== -->
+  <div id="page-promo" class="page">
+    <h1 class="page-title">Calculateur de promotions</h1>
+    <p class="page-sub">Entrez le prix original, choisissez le pourcentage de réduction et obtenez le prix final instantanément.</p>
+
+    <div class="card">
+      <div class="row">
+        <div class="field">
+          <label class="field-label">Nom du produit (optionnel)</label>
+          <input type="text" id="promo-name" placeholder="Ex: Huile d'olive 75cl" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label class="field-label">Prix original (€)</label>
+          <input type="number" id="promo-price" placeholder="Ex: 4.99" step="0.01" min="0" oninput="autoCalcPromo()" />
+        </div>
+        <div class="field">
+          <label class="field-label">Réduction (%)</label>
+          <input type="number" id="promo-pct" placeholder="Ex: 30" step="0.5" min="0" max="100" oninput="autoCalcPromo()" />
+        </div>
+      </div>
+
+      <!-- Quick discount buttons -->
+      <div class="section-title" style="margin-bottom:10px;">Remises rapides</div>
+      <div class="quick-discounts">
+        <button class="quick-disc-btn" onclick="setDiscount(5)">-5%</button>
+        <button class="quick-disc-btn" onclick="setDiscount(10)">-10%</button>
+        <button class="quick-disc-btn" onclick="setDiscount(15)">-15%</button>
+        <button class="quick-disc-btn" onclick="setDiscount(20)">-20%</button>
+        <button class="quick-disc-btn" onclick="setDiscount(25)">-25%</button>
+        <button class="quick-disc-btn" onclick="setDiscount(30)">-30%</button>
+        <button class="quick-disc-btn" onclick="setDiscount(40)">-40%</button>
+        <button class="quick-disc-btn" onclick="setDiscount(50)">-50%</button>
+        <button class="quick-disc-btn" onclick="setDiscount(60)">-60%</button>
+        <button class="quick-disc-btn" onclick="setDiscount(70)">-70%</button>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+        <button class="btn btn-primary" onclick="calculatePromo()">🧮 Calculer</button>
+        <button class="btn btn-ghost"   onclick="resetPromo()">✕ Réinitialiser</button>
+      </div>
+
+      <!-- Result -->
+      <div class="promo-result-box" id="promo-result">
+        <div class="promo-label">Prix original</div>
+        <div class="promo-original" id="promo-original-display">-</div>
+        <div class="promo-label" style="margin-top:8px">Prix avec promotion</div>
+        <div class="promo-final" id="promo-final-display">-</div>
+        <div class="promo-saving" id="promo-saving-display">Vous économisez -</div>
+        <button class="btn btn-success" onclick="savePromoHistory()" style="margin-top:16px;">💾 Enregistrer dans l'historique</button>
+      </div>
+    </div>
+
+    <!-- Multi-item calculator -->
+    <div class="card" style="margin-top:18px;">
+      <div class="section-title" style="margin-bottom:14px;">Comparateur multi-produits</div>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:14px;">Comparez rapidement plusieurs articles en promotion.</p>
+      <div id="multi-items"></div>
+      <button class="btn btn-ghost" onclick="addMultiItem()" style="margin-top:10px;">+ Ajouter un produit</button>
+      <div id="multi-result" style="margin-top:16px; display:none;">
+        <div class="section-title" style="margin-bottom:10px;">Total</div>
+        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+          <div>
+            <div class="promo-label">Total original</div>
+            <div style="font-size:1.4rem; font-weight:800;" id="multi-total-original">-</div>
+          </div>
+          <div>
+            <div class="promo-label">Total après promos</div>
+            <div style="font-size:1.4rem; font-weight:800; color:var(--success);" id="multi-total-final">-</div>
+          </div>
+          <div>
+            <div class="promo-label">Économies totales</div>
+            <div style="font-size:1.4rem; font-weight:800; color:var(--warn);" id="multi-total-saving">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div style="margin-top:28px;">
+      <div class="section-title">Historique des calculs</div>
+      <div class="promo-history-list" id="promo-history-list">
+        <div class="empty-state">
+          <div class="empty-icon">🏷️</div>
+          <div>Aucun calcul enregistré</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- #app -->
+
+
+<script>
+/* ============================================================
+   THREE.JS BACKGROUND
+============================================================ */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.z = 5;
+
+  // Particles
+  const count = 1400;
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+
+  const palette = [
+    [0, 0.46, 0.83],   // blue
+    [0.89, 0, 0.17],   // red
+    [1, 1, 1],          // white
+  ];
+
+  for (let i = 0; i < count; i++) {
+    positions[i*3]     = (Math.random() - 0.5) * 22;
+    positions[i*3 + 1] = (Math.random() - 0.5) * 22;
+    positions[i*3 + 2] = (Math.random() - 0.5) * 16;
+
+    const c = palette[Math.floor(Math.random() * palette.length)];
+    colors[i*3]     = c[0];
+    colors[i*3 + 1] = c[1];
+    colors[i*3 + 2] = c[2];
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
+
+  const mat = new THREE.PointsMaterial({
+    size: 0.04,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.55,
+    sizeAttenuation: true
+  });
+
+  const points = new THREE.Points(geo, mat);
+  scene.add(points);
+
+  // Floating torus
+  const torusGeo = new THREE.TorusGeometry(2.5, 0.015, 8, 100);
+  const torusMat = new THREE.MeshBasicMaterial({ color: 0x0074D4, transparent: true, opacity: 0.18 });
+  const torus = new THREE.Mesh(torusGeo, torusMat);
+  scene.add(torus);
+
+  const torus2 = new THREE.Mesh(
+    new THREE.TorusGeometry(3.8, 0.01, 8, 100),
+    new THREE.MeshBasicMaterial({ color: 0xE4002B, transparent: true, opacity: 0.1 })
+  );
+  torus2.rotation.x = Math.PI / 3;
+  scene.add(torus2);
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.004;
+
+    points.rotation.y = t * 0.08;
+    points.rotation.x = Math.sin(t * 0.05) * 0.15;
+
+    torus.rotation.x  = t * 0.25;
+    torus.rotation.y  = t * 0.15;
+    torus2.rotation.z = t * 0.18;
+    torus2.rotation.x = Math.PI / 3 + t * 0.1;
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+let currentPage = 'scanner';
+
+function switchPage(page) {
+  if (currentPage === page) return;
+
+  const old = document.getElementById('page-' + currentPage);
+  const next = document.getElementById('page-' + page);
+
+  // GSAP exit
+  gsap.to(old, { opacity: 0, y: -20, duration: 0.25, onComplete: () => {
+    old.classList.remove('active');
+    next.classList.add('active');
+    next.style.opacity = 0;
+    next.style.transform = 'translateY(20px)';
+    gsap.to(next, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
+  }});
+
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('nav-' + page).classList.add('active');
+
+  currentPage = page;
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+function showToast(msg, type = 'info', duration = 3200) {
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  el.innerHTML = `<span>${icons[type] || 'ℹ️'}</span><span>${msg}</span>`;
+  document.getElementById('toast-container').appendChild(el);
+  gsap.fromTo(el, { x: 60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: 'back.out' });
+  setTimeout(() => {
+    gsap.to(el, { x: 60, opacity: 0, duration: 0.25, onComplete: () => el.remove() });
+  }, duration);
+}
+
+/* ============================================================
+   PAGE 1 — SCANNER
+============================================================ */
+let codeReader = null;
+let streamActive = false;
+let currentProductData = null;
+
+async function startScanner() {
+  if (streamActive) return;
+
+  document.getElementById('scanner-placeholder').style.display = 'none';
+  document.getElementById('btn-start-scan').style.display = 'none';
+  document.getElementById('btn-stop-scan').style.display = '';
+
+  try {
+    if (typeof ZXing === 'undefined') {
+      throw new Error('ZXing non chargé');
+    }
+
+    codeReader = new ZXing.BrowserMultiFormatReader();
+    const videoElement = document.getElementById('scanner-video');
+
+    // Get camera devices
+    const devices = await codeReader.listVideoInputDevices();
+    // Prefer back camera
+    let deviceId = undefined;
+    if (devices.length > 1) {
+      const back = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('arrière') || d.label.toLowerCase().includes('rear') || d.label.toLowerCase().includes('environment'));
+      if (back) deviceId = back.deviceId;
+    }
+
+    streamActive = true;
+
+    codeReader.decodeFromVideoDevice(deviceId, videoElement, (result, err) => {
+      if (result) {
+        const code = result.getText();
+        // Debounce
+        if (window._lastScanned === code) return;
+        window._lastScanned = code;
+        setTimeout(() => window._lastScanned = null, 2500);
+
+        // Vibrate if supported
+        if (navigator.vibrate) navigator.vibrate(80);
+
+        lookupProduct(code);
+      }
+    });
+
+  } catch (err) {
+    showToast('Erreur caméra: ' + err.message, 'error');
+    stopScanner();
+    // Show manual input as fallback
+    document.getElementById('manual-lookup-card').style.display = '';
+  }
+}
+
+function stopScanner() {
+  if (codeReader) {
+    try { codeReader.reset(); } catch(e) {}
+    codeReader = null;
+  }
+  streamActive = false;
+  document.getElementById('scanner-placeholder').style.display = '';
+  document.getElementById('btn-start-scan').style.display = '';
+  document.getElementById('btn-stop-scan').style.display = 'none';
+  window._lastScanned = null;
+}
+
+function manualLookup() {
+  const card = document.getElementById('manual-lookup-card');
+  card.style.display = card.style.display === 'none' ? '' : 'none';
+}
+
+async function lookupProduct(barcode) {
+  barcode = barcode.trim().replace(/\s/g, '');
+  if (!barcode) return;
+
+  document.getElementById('product-result').style.display = 'block';
+  document.getElementById('product-loading').style.display = 'flex';
+  document.getElementById('product-content').style.display = 'none';
+  document.getElementById('product-not-found').style.display = 'none';
+
+  try {
+    // Open Food Facts API — free, no API key needed
+    const resp = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+    const data = await resp.json();
+
+    document.getElementById('product-loading').style.display = 'none';
+
+    if (data.status === 1 && data.product) {
+      const p = data.product;
+      currentProductData = {
+        barcode,
+        name: p.product_name_fr || p.product_name || 'Produit inconnu',
+        brand: p.brands || '',
+        image: p.image_url || p.image_front_url || '',
+        nutriscore: p.nutriscore_grade || '',
+        quantity: p.quantity || '',
+        nutrients: p.nutriments || {},
+        categories: p.categories_tags ? p.categories_tags.slice(0,3).map(c => c.replace('en:','').replace('fr:','')).join(', ') : ''
+      };
+
+      document.getElementById('prod-img').src  = currentProductData.image || '';
+      document.getElementById('prod-name').textContent  = currentProductData.name;
+      document.getElementById('prod-brand').textContent = currentProductData.brand || 'Marque inconnue';
+      document.getElementById('prod-code').textContent  = barcode;
+
+      // Nutri-score
+      const ns = currentProductData.nutriscore.toUpperCase();
+      const nsEl = document.getElementById('prod-nutri');
+      if (ns && 'ABCDE'.includes(ns)) {
+        nsEl.innerHTML = `<span class="nutri-score nutri-${ns.toLowerCase()}">Nutri-Score ${ns}</span>`;
+        nsEl.style.display = '';
+      } else {
+        nsEl.textContent = '';
+      }
+
+      // Quantity
+      const qtyEl = document.getElementById('prod-quantity');
+      if (currentProductData.quantity) {
+        qtyEl.textContent = currentProductData.quantity;
+        qtyEl.style.display = '';
+      } else {
+        qtyEl.style.display = 'none';
+      }
+
+      // Nutrients
+      const n = currentProductData.nutrients;
+      const pairs = [
+        ['Énergie', n['energy-kcal_100g'] ? n['energy-kcal_100g'] + ' kcal' : null],
+        ['Graisses', n['fat_100g'] != null ? n['fat_100g'] + 'g' : null],
+        ['Sucres', n['sugars_100g'] != null ? n['sugars_100g'] + 'g' : null],
+        ['Protéines', n['proteins_100g'] != null ? n['proteins_100g'] + 'g' : null],
+        ['Sel', n['salt_100g'] != null ? n['salt_100g'] + 'g' : null],
+      ].filter(([,v]) => v);
+
+      if (pairs.length) {
+        document.getElementById('prod-nutrients').style.display = '';
+        document.getElementById('prod-nutrients-list').innerHTML = pairs.map(([k,v]) =>
+          `<div class="badge badge-blue">${k}: ${v}</div>`
+        ).join('');
+      }
+
+      document.getElementById('product-content').style.display = '';
+
+      gsap.fromTo('#product-content', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35 });
+      showToast('Produit trouvé: ' + currentProductData.name, 'success');
+
+    } else {
+      currentProductData = { barcode, name: 'Produit #' + barcode };
+      document.getElementById('product-not-found').style.display = '';
+      showToast('Code-barre non reconnu dans Open Food Facts', 'error');
+    }
+
+  } catch (err) {
+    document.getElementById('product-loading').style.display = 'none';
+    document.getElementById('product-not-found').style.display = '';
+    showToast('Erreur réseau. Vérifiez votre connexion.', 'error');
+  }
+}
+
+// Scan history storage
+function getScanHistory() {
+  return JSON.parse(localStorage.getItem('carrefour_scan_history') || '[]');
+}
+
+function setScanHistory(arr) {
+  localStorage.setItem('carrefour_scan_history', JSON.stringify(arr));
+}
+
+function saveToScanHistory() {
+  if (!currentProductData) return;
+  const hist = getScanHistory();
+  // Avoid duplicates
+  const existing = hist.findIndex(h => h.barcode === currentProductData.barcode);
+  const item = {
+    barcode: currentProductData.barcode,
+    name: currentProductData.name,
+    brand: currentProductData.brand || '',
+    image: currentProductData.image || '',
+    savedAt: new Date().toISOString()
+  };
+  if (existing >= 0) hist[existing] = item;
+  else hist.unshift(item);
+  setScanHistory(hist.slice(0, 50));
+  renderScanHistory();
+  showToast('Produit enregistré dans l\'historique !', 'success');
+}
+
+function addToBarcodesFromScan() {
+  if (!currentProductData) return;
+  document.getElementById('bc-digits').value = currentProductData.barcode;
+  document.getElementById('bc-product-name').value = currentProductData.name;
+  autoDetectFormat(currentProductData.barcode);
+  switchPage('barcode');
+  setTimeout(() => generateBarcode(), 300);
+}
+
+function renderScanHistory() {
+  const hist = getScanHistory();
+  const container = document.getElementById('scan-history');
+  if (!hist.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div>Aucun scan enregistré</div></div>';
+    return;
+  }
+  container.innerHTML = hist.map((h, i) => `
+    <div class="history-item" onclick="lookupProduct('${h.barcode}')">
+      <div>
+        <div class="history-item-name">${escHtml(h.name)}</div>
+        <div class="history-item-code">${h.barcode} ${h.brand ? '· ' + escHtml(h.brand) : ''}</div>
+      </div>
+      <div class="history-item-time">${timeAgo(h.savedAt)}</div>
+    </div>
+  `).join('');
+}
+
+
+/* ============================================================
+   PAGE 2 — BARCODE GENERATOR
+============================================================ */
+let currentBarcodeData = null;
+
+function autoDetectFormat(digits) {
+  digits = digits.trim();
+  const sel = document.getElementById('bc-format');
+  if (/^\d{13}$/.test(digits))      sel.value = 'EAN13';
+  else if (/^\d{8}$/.test(digits))  sel.value = 'EAN8';
+  else if (/^\d{12}$/.test(digits)) sel.value = 'UPC';
+  else if (digits.length > 0)       sel.value = 'CODE128';
+}
+
+function generateBarcode() {
+  const digits  = document.getElementById('bc-digits').value.trim();
+  const name    = document.getElementById('bc-product-name').value.trim() || 'Produit sans nom';
+  const format  = document.getElementById('bc-format').value;
+
+  if (!digits) {
+    showToast('Veuillez entrer les chiffres du code-barre', 'error');
+    return;
+  }
+
+  // Validate EAN-13
+  if (format === 'EAN13' && !/^\d{13}$/.test(digits)) {
+    showToast('EAN-13 nécessite exactement 13 chiffres', 'error');
+    return;
+  }
+  if (format === 'EAN8' && !/^\d{8}$/.test(digits)) {
+    showToast('EAN-8 nécessite exactement 8 chiffres', 'error');
+    return;
+  }
+  if (format === 'UPC' && !/^\d{12}$/.test(digits)) {
+    showToast('UPC-A nécessite exactement 12 chiffres', 'error');
+    return;
+  }
+
+  try {
+    JsBarcode('#barcode-svg', digits, {
+      format: format,
+      width: 2.5,
+      height: 90,
+      displayValue: true,
+      fontSize: 14,
+      fontOptions: 'bold',
+      textMargin: 6,
+      margin: 12,
+      background: '#ffffff',
+      lineColor: '#000000'
+    });
+
+    currentBarcodeData = { digits, name, format };
+
+    document.getElementById('barcode-preview').style.display = 'block';
+    gsap.fromTo('#barcode-preview', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35 });
+    showToast('Code-barre généré !', 'success');
+
+  } catch (err) {
+    showToast('Erreur: ' + err.message, 'error');
+  }
+}
+
+function clearBarcodeForm() {
+  document.getElementById('bc-digits').value = '';
+  document.getElementById('bc-product-name').value = '';
+  document.getElementById('bc-format').value = 'EAN13';
+  document.getElementById('barcode-preview').style.display = 'none';
+  currentBarcodeData = null;
+}
+
+function saveBarcodeToHistory() {
+  if (!currentBarcodeData) return;
+
+  const hist = getBarcodeHistory();
+  const existing = hist.findIndex(h => h.digits === currentBarcodeData.digits);
+  const item = {
+    digits:  currentBarcodeData.digits,
+    name:    currentBarcodeData.name,
+    format:  currentBarcodeData.format,
+    savedAt: new Date().toISOString()
+  };
+  if (existing >= 0) hist[existing] = item;
+  else hist.unshift(item);
+
+  localStorage.setItem('carrefour_bc_history', JSON.stringify(hist.slice(0, 100)));
+  renderBarcodeHistory();
+  showToast('Code-barre enregistré !', 'success');
+}
+
+function getBarcodeHistory() {
+  return JSON.parse(localStorage.getItem('carrefour_bc_history') || '[]');
+}
+
+function renderBarcodeHistory() {
+  const hist = getBarcodeHistory();
+  const container = document.getElementById('barcode-history-list');
+  if (!hist.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🔢</div><div>Aucun code-barre enregistré</div></div>';
+    return;
+  }
+  container.innerHTML = hist.map((h, i) => {
+    const svgId = 'bc-hist-' + i;
+    return `
+      <div class="bc-history-item">
+        <div class="bc-thumb">
+          <svg id="${svgId}" style="display:block"></svg>
+        </div>
+        <div class="bc-info">
+          <div class="bc-name">${escHtml(h.name)}</div>
+          <div class="bc-code">${h.digits} · ${h.format}</div>
+        </div>
+        <div class="bc-actions">
+          <button class="icon-btn" title="Afficher en grand" onclick="showBcFull(${i})">🔍</button>
+          <button class="icon-btn" title="Réutiliser" onclick="reloadBarcode(${i})">↩️</button>
+          <button class="icon-btn del" title="Supprimer" onclick="deleteBcHistory(${i})">🗑️</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Render mini barcodes
+  hist.forEach((h, i) => {
+    try {
+      JsBarcode('#bc-hist-' + i, h.digits, {
+        format: h.format,
+        width: 1,
+        height: 32,
+        displayValue: false,
+        margin: 2,
+        background: '#ffffff',
+        lineColor: '#000000'
+      });
+    } catch(e) {}
+  });
+}
+
+function showBcFull(i) {
+  const hist = getBarcodeHistory();
+  const h = hist[i];
+  if (!h) return;
+  try {
+    JsBarcode('#bc-modal-svg', h.digits, {
+      format: h.format,
+      width: 3,
+      height: 120,
+      displayValue: true,
+      fontSize: 16,
+      fontOptions: 'bold',
+      textMargin: 8,
+      margin: 16,
+      background: '#ffffff',
+      lineColor: '#000000'
+    });
+    document.getElementById('bc-modal-name').textContent = h.name;
+    document.getElementById('bc-modal-code').textContent = h.digits + ' · ' + h.format;
+    document.getElementById('bc-modal').classList.add('open');
+    gsap.fromTo('.bc-modal-inner', { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out' });
+  } catch(e) {
+    showToast('Erreur d\'affichage', 'error');
+  }
+}
+
+function closeBcModal() {
+  gsap.to('.bc-modal-inner', { scale: 0.85, opacity: 0, duration: 0.2, onComplete: () => {
+    document.getElementById('bc-modal').classList.remove('open');
+  }});
+}
+
+function reloadBarcode(i) {
+  const hist = getBarcodeHistory();
+  const h = hist[i];
+  if (!h) return;
+  document.getElementById('bc-digits').value = h.digits;
+  document.getElementById('bc-product-name').value = h.name;
+  document.getElementById('bc-format').value = h.format;
+  generateBarcode();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteBcHistory(i) {
+  let hist = getBarcodeHistory();
+  hist.splice(i, 1);
+  localStorage.setItem('carrefour_bc_history', JSON.stringify(hist));
+  renderBarcodeHistory();
+  showToast('Code-barre supprimé', 'info');
+}
+
+function printBarcode() {
+  const wrap = document.querySelector('.barcode-wrap');
+  if (!wrap) return;
+  const w = window.open('', '_blank');
+  w.document.write(`
+    <html><head><title>Code-barre</title>
+    <style>body{display:flex;justify-content:center;padding:40px;font-family:sans-serif;}</style>
+    </head><body>
+    ${wrap.outerHTML}
+    <script>window.onload=()=>{window.print();window.close()}<\/script>
+    </body></html>
+  `);
+  w.document.close();
+}
+
+function downloadBarcode() {
+  const svg = document.getElementById('barcode-svg');
+  if (!svg) return;
+  const canvas = document.createElement('canvas');
+  const data = new XMLSerializer().serializeToString(svg);
+  const img = new Image();
+  const blob = new Blob([data], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  img.onload = () => {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(img, 0, 0);
+    URL.revokeObjectURL(url);
+    const a = document.createElement('a');
+    a.download = (currentBarcodeData?.digits || 'barcode') + '.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    showToast('PNG téléchargé !', 'success');
+  };
+  img.src = url;
+}
+
+
+/* ============================================================
+   PAGE 3 — PROMO CALCULATOR
+============================================================ */
+let multiItemCount = 0;
+let lastCalcData = null;
+
+function setDiscount(pct) {
+  document.getElementById('promo-pct').value = pct;
+  document.querySelectorAll('.quick-disc-btn').forEach(b => {
+    b.classList.toggle('selected', b.textContent === '-' + pct + '%');
+  });
+  autoCalcPromo();
+}
+
+function autoCalcPromo() {
+  const price = parseFloat(document.getElementById('promo-price').value);
+  const pct   = parseFloat(document.getElementById('promo-pct').value);
+  if (!isNaN(price) && !isNaN(pct) && price > 0 && pct >= 0 && pct <= 100) {
+    calculatePromo(false);
+  }
+}
+
+function calculatePromo(save = true) {
+  const price = parseFloat(document.getElementById('promo-price').value);
+  const pct   = parseFloat(document.getElementById('promo-pct').value);
+  const name  = document.getElementById('promo-name').value.trim() || 'Article';
+
+  if (isNaN(price) || isNaN(pct)) {
+    showToast('Veuillez entrer un prix et un pourcentage', 'error');
+    return;
+  }
+  if (price <= 0) { showToast('Le prix doit être supérieur à 0', 'error'); return; }
+  if (pct < 0 || pct > 100) { showToast('Le pourcentage doit être entre 0 et 100', 'error'); return; }
+
+  const saving = price * (pct / 100);
+  const final  = price - saving;
+
+  document.getElementById('promo-original-display').textContent = formatEuro(price);
+  document.getElementById('promo-final-display').textContent    = formatEuro(final);
+  document.getElementById('promo-saving-display').textContent   = `Vous économisez ${formatEuro(saving)} (${pct}%)`;
+
+  const box = document.getElementById('promo-result');
+  box.style.display = 'block';
+  gsap.fromTo(box, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 });
+  gsap.fromTo('#promo-final-display', { scale: 0.8 }, { scale: 1, duration: 0.4, ease: 'back.out' });
+
+  lastCalcData = { name, price, pct, saving, final };
+
+  // Update multi totals if applicable
+  calcMultiTotal();
+}
+
+function savePromoHistory() {
+  if (!lastCalcData) return;
+  const hist = JSON.parse(localStorage.getItem('carrefour_promo_history') || '[]');
+  hist.unshift({
+    ...lastCalcData,
+    savedAt: new Date().toISOString()
+  });
+  localStorage.setItem('carrefour_promo_history', JSON.stringify(hist.slice(0, 50)));
+  renderPromoHistory();
+  showToast('Calcul enregistré !', 'success');
+}
+
+function renderPromoHistory() {
+  const hist = JSON.parse(localStorage.getItem('carrefour_promo_history') || '[]');
+  const container = document.getElementById('promo-history-list');
+  if (!hist.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">🏷️</div><div>Aucun calcul enregistré</div></div>';
+    return;
+  }
+  container.innerHTML = hist.map((h, i) => `
+    <div class="promo-history-item">
+      <div>
+        <div class="phi-name">${escHtml(h.name)}</div>
+        <div class="phi-detail">${formatEuro(h.price)} - ${h.pct}% = économie de ${formatEuro(h.saving)} · ${timeAgo(h.savedAt)}</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="phi-final">${formatEuro(h.final)}</div>
+        <button class="icon-btn del" style="margin-top:4px;" onclick="deletePromoHistory(${i})" title="Supprimer">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function deletePromoHistory(i) {
+  const hist = JSON.parse(localStorage.getItem('carrefour_promo_history') || '[]');
+  hist.splice(i, 1);
+  localStorage.setItem('carrefour_promo_history', JSON.stringify(hist));
+  renderPromoHistory();
+}
+
+function resetPromo() {
+  document.getElementById('promo-price').value = '';
+  document.getElementById('promo-pct').value = '';
+  document.getElementById('promo-name').value = '';
+  document.getElementById('promo-result').style.display = 'none';
+  document.querySelectorAll('.quick-disc-btn').forEach(b => b.classList.remove('selected'));
+  lastCalcData = null;
+}
+
+// Multi-item
+function addMultiItem() {
+  multiItemCount++;
+  const id = multiItemCount;
+  const div = document.createElement('div');
+  div.id = 'multi-item-' + id;
+  div.className = 'row';
+  div.style.marginBottom = '10px';
+  div.innerHTML = `
+    <div class="field" style="flex:2">
+      <input type="text" placeholder="Nom (optionnel)" id="mi-name-${id}" />
+    </div>
+    <div class="field" style="max-width:110px">
+      <input type="number" placeholder="Prix €" id="mi-price-${id}" step="0.01" oninput="calcMultiTotal()" />
+    </div>
+    <div class="field" style="max-width:90px">
+      <input type="number" placeholder="-%" id="mi-pct-${id}" step="0.5" min="0" max="100" oninput="calcMultiTotal()" />
+    </div>
+    <button class="icon-btn del" onclick="removeMultiItem(${id})" style="margin-bottom:0;flex-shrink:0" title="Supprimer">🗑️</button>
+  `;
+  document.getElementById('multi-items').appendChild(div);
+  gsap.fromTo(div, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.25 });
+}
+
+function removeMultiItem(id) {
+  const el = document.getElementById('multi-item-' + id);
+  if (el) {
+    gsap.to(el, { opacity: 0, height: 0, duration: 0.2, onComplete: () => { el.remove(); calcMultiTotal(); } });
+  }
+}
+
+function calcMultiTotal() {
+  let totalOrig = 0, totalFinal = 0;
+  let hasItems = false;
+
+  for (let i = 1; i <= multiItemCount; i++) {
+    const priceEl = document.getElementById('mi-price-' + i);
+    const pctEl   = document.getElementById('mi-pct-' + i);
+    if (!priceEl) continue;
+
+    const price = parseFloat(priceEl.value);
+    const pct   = parseFloat(pctEl.value) || 0;
+    if (!isNaN(price) && price > 0) {
+      hasItems = true;
+      totalOrig  += price;
+      totalFinal += price * (1 - pct / 100);
+    }
+  }
+
+  const box = document.getElementById('multi-result');
+  if (hasItems) {
+    box.style.display = '';
+    document.getElementById('multi-total-original').textContent = formatEuro(totalOrig);
+    document.getElementById('multi-total-final').textContent    = formatEuro(totalFinal);
+    document.getElementById('multi-total-saving').textContent   = formatEuro(totalOrig - totalFinal);
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+
+/* ============================================================
+   HELPERS
+============================================================ */
+function formatEuro(val) {
+  return val.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function timeAgo(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const s = Math.floor(diff / 1000);
+  if (s < 60)     return 'à l\'instant';
+  if (s < 3600)   return Math.floor(s/60) + ' min';
+  if (s < 86400)  return Math.floor(s/3600) + 'h';
+  if (s < 604800) return Math.floor(s/86400) + 'j';
+  return new Date(iso).toLocaleDateString('fr-FR');
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderScanHistory();
+  renderBarcodeHistory();
+  renderPromoHistory();
+
+  // Close modal on background click
+  document.getElementById('bc-modal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('bc-modal')) closeBcModal();
+  });
+
+  // Initial GSAP entrance
+  gsap.fromTo('header', { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' });
+  gsap.fromTo('#page-scanner', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.15, ease: 'power2.out' });
+});
+</script>
+</body>
+</html>
