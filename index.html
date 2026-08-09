@@ -16,6 +16,11 @@
        RESET & VARIABLES
     ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    button, input, select, textarea { font: inherit; }
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(93,184,255,0.8);
+      outline-offset: 2px;
+    }
 
     :root {
       --blue:    #0074D4;
@@ -127,6 +132,42 @@
     nav button:not(.active):hover {
       color: var(--text);
       background: rgba(255,255,255,0.1);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      background: rgba(255,255,255,0.07);
+      cursor: pointer;
+    }
+
+    .menu-toggle span,
+    .menu-toggle span::before,
+    .menu-toggle span::after {
+      display: block;
+      width: 20px;
+      height: 2px;
+      border-radius: 2px;
+      background: currentColor;
+      transition: transform .2s, opacity .2s;
+      content: '';
+    }
+
+    .menu-toggle span { position: relative; }
+    .menu-toggle span::before { position: absolute; top: -7px; }
+    .menu-toggle span::after { position: absolute; top: 7px; }
+    .menu-toggle[aria-expanded="true"] span { background: transparent; }
+    .menu-toggle[aria-expanded="true"] span::before { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle[aria-expanded="true"] span::after { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-backdrop {
+      display: none;
     }
 
     /* ============================================================
@@ -417,6 +458,49 @@
       margin-bottom: 22px;
       flex-wrap: wrap;
     }
+
+    .scanner-tools {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: -10px auto 22px;
+    }
+
+    .camera-picker {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      max-width: 100%;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .camera-picker.visible { display: flex; }
+    .camera-picker select {
+      width: auto;
+      min-width: 150px;
+      max-width: min(280px, 65vw);
+      padding: 5px 8px;
+      color: var(--text);
+      font-size: .82rem;
+    }
+
+    .scanner-status {
+      min-height: 22px;
+      margin: -8px auto 16px;
+      color: var(--muted);
+      text-align: center;
+      font-size: .84rem;
+    }
+
+    .scanner-status.active { color: var(--success); }
+    .scanner-status.error { color: #ff8e9d; }
 
     /* Product result card */
     #product-result {
@@ -780,11 +864,43 @@
 
     /* Responsive */
     @media (max-width: 600px) {
-      nav button { padding: 7px 12px; font-size: 0.78rem; }
       header { padding: 0 14px; }
+      .menu-toggle { display: inline-flex; }
+      nav {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 14px;
+        left: 14px;
+        flex-direction: column;
+        gap: 5px;
+        padding: 8px;
+        border: 1px solid var(--border);
+        background: rgba(12,17,32,0.97);
+        box-shadow: 0 18px 45px rgba(0,0,0,.4);
+      }
+      nav.open { display: flex; }
+      nav button { width: 100%; padding: 12px 14px; text-align: left; }
+      .nav-backdrop.open {
+        display: block;
+        position: fixed;
+        inset: 64px 0 0;
+        z-index: 90;
+        background: rgba(0,0,0,.35);
+      }
       .page { padding: 18px 14px 60px; }
       h1.page-title { font-size: 1.35rem; }
       .product-card { flex-direction: column; }
+      .scanner-tools { align-items: stretch; flex-direction: column; }
+      .camera-picker { justify-content: space-between; }
+      .camera-picker select { flex: 1; min-width: 0; }
+      .btn { justify-content: center; }
+      .product-card .btn { width: 100%; }
+      .product-card > .product-info { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
   </style>
 </head>
@@ -816,12 +932,16 @@
       <div class="logo-icon">🛒</div>
       <span>Carrefour <strong>Pro</strong></span>
     </div>
-    <nav>
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="main-nav">
+      <span></span>
+    </button>
+    <nav id="main-nav" aria-label="Navigation principale">
       <button id="nav-scanner"   onclick="switchPage('scanner')"   class="active">📷 Scanner</button>
       <button id="nav-barcode"   onclick="switchPage('barcode')"  >🔢 Codes-barres</button>
       <button id="nav-promo"     onclick="switchPage('promo')"    >🏷️ Promos</button>
     </nav>
   </header>
+  <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
 
   <!-- ====================================================
        PAGE 1 — SCANNER DE PRODUITS
@@ -852,6 +972,15 @@
       <button class="btn btn-primary" id="btn-start-scan" onclick="startScanner()">▶ Démarrer la caméra</button>
       <button class="btn btn-danger"  id="btn-stop-scan"  onclick="stopScanner()" style="display:none">⏹ Arrêter</button>
       <button class="btn btn-ghost"   onclick="manualLookup()">🔍 Saisie manuelle</button>
+    </div>
+    <div class="scanner-tools">
+      <div class="camera-picker" id="camera-picker">
+        <label for="camera-select">Caméra</label>
+        <select id="camera-select" aria-label="Choisir la caméra"></select>
+      </div>
+    </div>
+    <div class="scanner-status" id="scanner-status" role="status" aria-live="polite">
+      Prêt à scanner un code-barres
     </div>
 
     <!-- Manual barcode input -->
@@ -1176,9 +1305,19 @@
    NAVIGATION
 ============================================================ */
 let currentPage = 'scanner';
+let cameraStream = null;
+let nativeDetector = null;
+let nativeScanTimer = null;
+let selectedCameraId = '';
+let scannerRunId = 0;
 
 function switchPage(page) {
-  if (currentPage === page) return;
+  if (currentPage === page) {
+    closeMobileMenu();
+    return;
+  }
+
+  if (currentPage === 'scanner' && streamActive) stopScanner();
 
   const old = document.getElementById('page-' + currentPage);
   const next = document.getElementById('page-' + page);
@@ -1196,6 +1335,29 @@ function switchPage(page) {
   document.getElementById('nav-' + page).classList.add('active');
 
   currentPage = page;
+  closeMobileMenu();
+}
+
+function closeMobileMenu() {
+  const nav = document.getElementById('main-nav');
+  const toggle = document.getElementById('menu-toggle');
+  const backdrop = document.getElementById('nav-backdrop');
+  if (!nav || !toggle || !backdrop) return;
+  nav.classList.remove('open');
+  backdrop.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.setAttribute('aria-label', 'Ouvrir le menu');
+}
+
+function toggleMobileMenu() {
+  const nav = document.getElementById('main-nav');
+  const toggle = document.getElementById('menu-toggle');
+  const backdrop = document.getElementById('nav-backdrop');
+  const open = !nav.classList.contains('open');
+  nav.classList.toggle('open', open);
+  backdrop.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', String(open));
+  toggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
 }
 
 /* ============================================================
@@ -1226,59 +1388,155 @@ async function startScanner() {
   document.getElementById('scanner-placeholder').style.display = 'none';
   document.getElementById('btn-start-scan').style.display = 'none';
   document.getElementById('btn-stop-scan').style.display = '';
+  setScannerStatus('Demande d’accès à la caméra…');
 
   try {
-    if (typeof ZXing === 'undefined') {
-      throw new Error('ZXing non chargé');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error('La caméra nécessite un navigateur sécurisé (HTTPS) et compatible.');
     }
 
-    codeReader = new ZXing.BrowserMultiFormatReader();
     const videoElement = document.getElementById('scanner-video');
+    const runId = ++scannerRunId;
 
-    // Get camera devices
-    const devices = await codeReader.listVideoInputDevices();
-    // Prefer back camera
-    let deviceId = undefined;
-    if (devices.length > 1) {
-      const back = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('arrière') || d.label.toLowerCase().includes('rear') || d.label.toLowerCase().includes('environment'));
-      if (back) deviceId = back.deviceId;
-    }
-
-    streamActive = true;
-
-    codeReader.decodeFromVideoDevice(deviceId, videoElement, (result, err) => {
-      if (result) {
-        const code = result.getText();
-        // Debounce
-        if (window._lastScanned === code) return;
-        window._lastScanned = code;
-        setTimeout(() => window._lastScanned = null, 2500);
-
-        // Vibrate if supported
-        if (navigator.vibrate) navigator.vibrate(80);
-
-        lookupProduct(code);
-      }
+    // Asking once for permission makes camera names available on mobile.
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        deviceId: selectedCameraId ? { exact: selectedCameraId } : undefined,
+        facingMode: selectedCameraId ? undefined : { ideal: 'environment' },
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+      audio: false
     });
 
+    streamActive = true;
+    videoElement.srcObject = cameraStream;
+    await videoElement.play();
+    await refreshCameraList();
+
+    if (runId !== scannerRunId || !streamActive) return;
+
+    if ('BarcodeDetector' in window) {
+      try {
+        nativeDetector = new BarcodeDetector();
+        setScannerStatus('Caméra active — alignez le code-barres dans le cadre.', 'active');
+        scanWithNativeDetector(runId);
+        return;
+      } catch (nativeError) {
+        nativeDetector = null;
+      }
+    }
+
+    // Fallback for browsers that do not expose BarcodeDetector.
+    if (typeof ZXing === 'undefined') throw new Error('Le moteur de lecture n’est pas disponible.');
+    stopCameraStream();
+    codeReader = new ZXing.BrowserMultiFormatReader();
+    codeReader.decodeFromVideoDevice(selectedCameraId || undefined, videoElement, (result) => {
+      if (result && runId === scannerRunId) handleDetectedCode(result.getText());
+    });
+    setScannerStatus('Caméra active — alignez le code-barres dans le cadre.', 'active');
+
   } catch (err) {
-    showToast('Erreur caméra: ' + err.message, 'error');
+    const message = err && err.name === 'NotAllowedError'
+      ? 'Autorisez l’accès à la caméra dans votre navigateur.'
+      : (err.message || 'Impossible de démarrer la caméra.');
+    showToast(message, 'error');
+    setScannerStatus(message, 'error');
     stopScanner();
-    // Show manual input as fallback
     document.getElementById('manual-lookup-card').style.display = '';
   }
 }
 
 function stopScanner() {
+  scannerRunId++;
+  if (nativeScanTimer) {
+    clearTimeout(nativeScanTimer);
+    nativeScanTimer = null;
+  }
+  nativeDetector = null;
   if (codeReader) {
     try { codeReader.reset(); } catch(e) {}
     codeReader = null;
   }
+  stopCameraStream();
+  const video = document.getElementById('scanner-video');
+  if (video) video.srcObject = null;
   streamActive = false;
   document.getElementById('scanner-placeholder').style.display = '';
   document.getElementById('btn-start-scan').style.display = '';
   document.getElementById('btn-stop-scan').style.display = 'none';
   window._lastScanned = null;
+  setScannerStatus('Prêt à scanner un code-barres');
+}
+
+function stopCameraStream() {
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(track => track.stop());
+    cameraStream = null;
+  }
+}
+
+async function refreshCameraList() {
+  const select = document.getElementById('camera-select');
+  const picker = document.getElementById('camera-picker');
+  if (!navigator.mediaDevices.enumerateDevices) return;
+  const devices = (await navigator.mediaDevices.enumerateDevices())
+    .filter(device => device.kind === 'videoinput');
+  if (!devices.length) return;
+
+  select.innerHTML = devices.map((device, index) => {
+    const label = device.label || `Caméra ${index + 1}`;
+    return `<option value="${escHtml(device.deviceId)}">${escHtml(label)}</option>`;
+  }).join('');
+
+  const activeTrack = cameraStream && cameraStream.getVideoTracks()[0];
+  const activeId = activeTrack && activeTrack.getSettings ? activeTrack.getSettings().deviceId : selectedCameraId;
+  selectedCameraId = activeId || selectedCameraId || devices[0].deviceId;
+  select.value = selectedCameraId;
+  picker.classList.toggle('visible', devices.length > 1);
+}
+
+async function changeCamera(deviceId) {
+  if (!deviceId || deviceId === selectedCameraId) return;
+  selectedCameraId = deviceId;
+  if (streamActive) {
+    stopScanner();
+    await startScanner();
+  }
+}
+
+function setScannerStatus(message, tone = '') {
+  const status = document.getElementById('scanner-status');
+  if (!status) return;
+  status.textContent = message;
+  status.className = 'scanner-status' + (tone ? ' ' + tone : '');
+}
+
+function handleDetectedCode(code) {
+  code = String(code || '').trim();
+  if (!code || window._lastScanned === code) return;
+  window._lastScanned = code;
+  setTimeout(() => {
+    if (window._lastScanned === code) window._lastScanned = null;
+  }, 2500);
+  if (navigator.vibrate) navigator.vibrate(80);
+  setScannerStatus(`Code détecté : ${code}`, 'active');
+  lookupProduct(code);
+}
+
+function scanWithNativeDetector(runId) {
+  if (!nativeDetector || !streamActive || runId !== scannerRunId) return;
+  const video = document.getElementById('scanner-video');
+  nativeDetector.detect(video)
+    .then(codes => {
+      if (codes.length) handleDetectedCode(codes[0].rawValue);
+    })
+    .catch(() => {})
+    .finally(() => {
+      if (streamActive && runId === scannerRunId) {
+        nativeScanTimer = setTimeout(() => scanWithNativeDetector(runId), 180);
+      }
+    });
 }
 
 function manualLookup() {
@@ -1849,6 +2107,22 @@ document.addEventListener('DOMContentLoaded', () => {
   renderScanHistory();
   renderBarcodeHistory();
   renderPromoHistory();
+
+  const menuToggle = document.getElementById('menu-toggle');
+  const navBackdrop = document.getElementById('nav-backdrop');
+  const cameraSelect = document.getElementById('camera-select');
+  menuToggle.addEventListener('click', toggleMobileMenu);
+  navBackdrop.addEventListener('click', closeMobileMenu);
+  cameraSelect.addEventListener('change', (event) => changeCamera(event.target.value));
+  document.getElementById('manual-barcode').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') lookupProduct(event.target.value);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeMobileMenu();
+      if (document.getElementById('bc-modal').classList.contains('open')) closeBcModal();
+    }
+  });
 
   // Close modal on background click
   document.getElementById('bc-modal').addEventListener('click', (e) => {
