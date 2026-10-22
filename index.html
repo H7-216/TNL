@@ -396,6 +396,35 @@ select.input option { background: var(--surface-solid); color: var(--text); }
 .src-note { margin-top: 14px; font-size: 12px; color: var(--text-3); display: flex; gap: 6px; align-items: flex-start; }
 .src-note .ic { margin-top: 1px; }
 @media (min-width: 1081px) { #page-scanner .grid-2 > .card:first-child { position: sticky; top: calc(var(--header-h) + 18px); } }
+.search-card { margin-bottom: 20px; padding: 18px; }
+.search-row { display: flex; gap: 10px; }
+.search-row .input-wrap { flex: 1; min-width: 0; }
+.search-row .input { height: 50px; font-size: 15.5px; }
+.search-row .btn { height: 50px; flex: none; }
+.search-row input[type="search"]::-webkit-search-cancel-button { cursor: pointer; }
+.search-sub { display: flex; align-items: center; gap: 12px 16px; margin-top: 12px; flex-wrap: wrap; }
+.search-sub .seg button { display: inline-flex; align-items: center; gap: 6px; }
+.search-sub .seg .ic { width: 14px; height: 14px; }
+.q-results { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 4px; }
+.q-sec { margin-top: 14px; }
+.q-sec h5 { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+.q-sec h5 .ic { width: 14px; height: 14px; color: var(--brand); }
+.q-sec h5 > span { margin-left: 4px; padding: 1px 7px; border-radius: 999px; background: var(--surface-3); color: var(--text-2); letter-spacing: 0; }
+.q-sec .list { gap: 6px; }
+.q-sec .item { padding: 10px 12px; }
+.q-none { font-size: 13.5px; color: var(--text-3); padding: 10px 12px; border: 1px dashed var(--line-2); border-radius: 12px; }
+.q-price { display: flex; flex-direction: column; align-items: flex-end; flex: none; text-align: right; }
+.q-price b { font-family: var(--font-display); font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--green); }
+.q-price small { font-size: 11.5px; color: var(--text-3); white-space: nowrap; }
+.q-price.none small { font-style: italic; }
+.q-foot { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+@media (max-width: 560px) {
+  .search-row .btn span { display: none; }
+  .search-row .btn { width: 50px; padding: 0; justify-content: center; }
+  .search-sub .seg { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+  .search-sub .seg button { justify-content: center; padding: 0 6px; font-size: 12.5px; }
+  .q-foot #q-close { margin-left: 0 !important; }
+}
 .history-tools { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
 .history-tools .input-wrap { flex: 1 1 220px; }
 .history-tools .input { height: 40px; font-size: 14px; }
@@ -444,6 +473,31 @@ select.input option { background: var(--surface-solid); color: var(--text); }
 .chat-page.in-room .lead { display: none; }
 .chat-page.in-room h1.title { font-size: clamp(24px, 2.4vw, 30px); }
 .chat-side { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+.relays { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; align-items: center; }
+.relay { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px; border-radius: 999px; font-size: 11.5px; font-weight: 600; background: var(--surface-2); border: 1px solid var(--line); color: var(--text-2); }
+.relay i { width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+.relay.on i { background: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+.relay.err i { background: var(--red); }
+.relay.wait i { animation: blink 1.2s infinite; }
+@keyframes blink { 50% { opacity: .25; } }
+.relay-retry { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700; color: var(--brand); background: var(--brand-soft); }
+.relay-retry .ic { width: 12px; height: 12px; }
+.chat-banner { display: flex; gap: 12px; align-items: flex-start; margin: 10px 14px 0; padding: 12px 14px; border-radius: 14px; background: var(--amber-soft); border: 1px solid var(--line); font-size: 13px; color: var(--text-2); }
+.chat-banner[hidden] { display: none; }
+.chat-banner > .ic { color: var(--amber); flex: none; margin-top: 2px; }
+.chat-banner > div { flex: 1; min-width: 0; }
+.chat-banner b { display: block; color: var(--text); font-size: 13.5px; margin-bottom: 2px; }
+.chat-banner .btn { flex: none; }
+@media (max-width: 560px) { .chat-banner { flex-wrap: wrap; } .chat-banner .btn { margin-left: 30px; } }
+.j-more { border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; background: var(--surface-2); }
+.j-more summary { cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--text-2); display: flex; align-items: center; gap: 8px; list-style: none; }
+.j-more summary::-webkit-details-marker { display: none; }
+.j-more summary::after { content: '+'; margin-left: auto; font-size: 17px; color: var(--text-3); }
+.j-more[open] summary::after { content: '−'; }
+.j-more .input-hint { display: block; margin-top: 8px; }
+.invite-box { padding: 16px 18px; border-radius: 16px; background: var(--brand-soft); border: 1px solid var(--brand-line); display: flex; flex-direction: column; }
+.invite-box small { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.invite-box b { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -.02em; margin-top: 2px; word-break: break-word; }
 .chat-side .card { padding: 18px; }
 .room-head { display: flex; align-items: center; gap: 12px; }
 .room-avatar { width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 18px; flex: none;
@@ -647,8 +701,20 @@ select.input option { background: var(--surface-solid); color: var(--text); }
         <div>
           <div class="eyebrow">Scanner</div>
           <h1 class="title">Identifiez un produit <em>en un instant</em></h1>
-          <p class="lead">Visez le code-barres avec la caméra, prenez-le en photo ou tapez les chiffres. Fiche produit, Nutri-Score, prix relevés en magasin et infos rayon.</p>
+          <p class="lead">Visez le code-barres avec la caméra, prenez-le en photo, tapez les chiffres, ou cherchez par le nom quand l’article n’a ni code ni prix. Prix des Carrefour de Nice uniquement.</p>
         </div>
+      </div>
+
+      <div class="card reveal search-card" id="search-card">
+        <form class="search-row" id="q-form" onsubmit="return false" role="search">
+          <div class="input-wrap"><i data-i="Search"></i><input class="input" id="q-input" type="search" enterkeyhint="search" autocomplete="off" maxlength="80" placeholder="Nom du produit : tomates grappe, Nutella 400 g, baguette…" aria-label="Rechercher un produit par son nom"></div>
+          <button class="btn btn-primary" id="q-go" type="button"><i data-i="Search"></i><span>Rechercher</span></button>
+        </form>
+        <div class="search-sub">
+          <div class="seg" id="q-scope" role="group" aria-label="Magasins"><button type="button" data-s="nice"><i data-i="MapPin" class="sm"></i>Carrefour Nice</button><button type="button" data-s="tnl"><i data-i="Store" class="sm"></i>Nice TNL seul</button></div>
+          <label class="toggle"><input type="checkbox" id="q-priced"> Avec un prix relevé seulement</label>
+        </div>
+        <div class="q-results" id="q-results" hidden></div>
       </div>
 
       <div class="grid-2">
@@ -847,27 +913,27 @@ select.input option { background: var(--surface-solid); color: var(--text); }
       <!-- Rejoindre un salon -->
       <div class="join-wrap" id="chat-join">
         <div class="card reveal">
-          <div class="card-title"><i data-i="Users"></i>Rejoindre ou créer un salon</div>
+          <div class="card-title"><i data-i="Users"></i>Entrer dans un salon</div>
           <div class="stack">
-            <label class="field"><span>Votre prénom</span><input class="input" id="j-name" maxlength="24" placeholder="Ex : Rayan" autocomplete="nickname"></label>
+            <label class="field"><span>Votre prénom</span><input class="input" id="j-name" maxlength="24" placeholder="Ex : Rayan" autocomplete="nickname" enterkeyhint="go"></label>
             <div class="field"><span>Votre couleur</span><div class="color-pick" id="j-colors"></div></div>
-            <label class="field"><span>Nom du salon</span><input class="input" id="j-room" maxlength="40" placeholder="Ex : Équipe rayon frais"></label>
-            <label class="field"><span>Mot de passe du salon</span><input class="input" id="j-pass" type="password" maxlength="64" placeholder="Partagé uniquement entre collègues" autocomplete="off"></label>
-            <div class="input-hint" id="j-hint">Même nom et même mot de passe = même salon. Choisissez un mot de passe difficile à deviner.</div>
+            <label class="field"><span>Nom du salon</span><input class="input" id="j-room" maxlength="40" value="Carrefour Nice TNL" placeholder="Ex : Carrefour Nice TNL" autocomplete="off" enterkeyhint="go"></label>
+            <details class="j-more" id="j-more">
+              <summary><i data-i="Lock" class="sm"></i>Code secret (facultatif)</summary>
+              <label class="field" style="margin-top:10px"><input class="input" id="j-secret" maxlength="40" placeholder="Laissez vide si on ne vous en a pas donné" autocomplete="off" enterkeyhint="go"></label>
+              <span class="input-hint">Avec un code secret, seuls les collègues qui le connaissent lisent le salon. Tout le monde doit entrer le même.</span>
+            </details>
+            <div class="input-hint" id="j-hint">Même nom de salon = même discussion. Majuscules, accents et espaces ne comptent pas.</div>
             <button class="btn btn-primary btn-lg" id="j-go"><i data-i="ArrowRight"></i>Entrer dans le salon</button>
-            <div class="row" style="align-items:flex-end">
-              <label class="field"><span>Ou collez un code d’invitation</span><input class="input mono" id="j-code" placeholder="CP1-…" autocomplete="off"></label>
-              <button class="btn btn-ghost" id="j-code-go" style="flex:none"><i data-i="Link"></i>Utiliser</button>
-            </div>
           </div>
         </div>
         <div class="card reveal">
-          <div class="card-title"><i data-i="Lock"></i>Comment ça marche</div>
+          <div class="card-title"><i data-i="Info"></i>Comment ça marche</div>
           <div class="join-points">
-            <div><span class="ji"><i data-i="KeyRound"></i></span><div><b>Chiffré de bout en bout</b><span>Les messages sont chiffrés sur votre appareil avec le mot de passe du salon (AES-256). Sans lui, personne ne peut les lire.</span></div></div>
-            <div><span class="ji"><i data-i="Zap"></i></span><div><b>Instantané, sans compte</b><span>Pas d’inscription ni de serveur à installer : les messages chiffrés transitent par un relais public.</span></div></div>
-            <div><span class="ji"><i data-i="Clock"></i></span><div><b>Historique sur vos appareils</b><span>Chaque appareil garde l’historique. En arrivant, vous récupérez les messages manqués auprès des collègues connectés.</span></div></div>
-            <div><span class="ji"><i data-i="Package"></i></span><div><b>Relié aux outils</b><span>Partagez une fiche produit, un code-barres à scanner en caisse ou un calcul de promo en un clic.</span></div></div>
+            <div><span class="ji"><i data-i="Hash"></i></span><div><b>Le nom du salon suffit</b><span>Vos collègues ouvrent l’onglet Discussion, entrent leur prénom et le même nom de salon : ils arrivent directement avec vous. Pas de compte, pas de code à copier.</span></div></div>
+            <div><span class="ji"><i data-i="Clock"></i></span><div><b>Messages gardés 14 jours</b><span>Un collègue qui arrive plus tard retrouve les messages des 14 derniers jours, même si personne d’autre n’est connecté.</span></div></div>
+            <div><span class="ji"><i data-i="Zap"></i></span><div><b>Trois relais en même temps</b><span>Chaque message part par trois relais publics : il suffit qu’un seul passe. Si le Wi-Fi bloque tout, passez en 4G/5G.</span></div></div>
+            <div><span class="ji"><i data-i="KeyRound"></i></span><div><b>Chiffré sur l’appareil</b><span>Les messages sont chiffrés (AES-256) avant d’être envoyés. Ajoutez un code secret pour que personne d’autre ne puisse les lire.</span></div></div>
           </div>
         </div>
       </div>
@@ -881,6 +947,7 @@ select.input option { background: var(--surface-solid); color: var(--text); }
               <div class="room-avatar" id="room-avatar">É</div>
               <div style="min-width:0"><div class="room-name" id="room-name">Salon</div><div class="conn wait" id="conn"><i></i><span>Connexion…</span></div></div>
             </div>
+            <div class="relays" id="relays" aria-label="Relais de messagerie"></div>
             <div class="btn-row" style="margin-top:14px">
               <button class="btn btn-soft btn-sm" id="btn-invite"><i data-i="Copy" class="sm"></i>Inviter</button>
               <button class="btn btn-ghost btn-sm" id="btn-notif"><i data-i="Bell" class="sm"></i>Alertes</button>
@@ -903,6 +970,7 @@ select.input option { background: var(--surface-solid); color: var(--text); }
             <div style="min-width:0"><div class="t-title" id="chat-title">Salon</div><div class="t-sub" id="chat-sub">—</div></div>
             <div class="right"><span class="e2e" title="Chiffrement de bout en bout AES-256"><i data-i="Lock"></i>Chiffré</span></div>
           </div>
+          <div class="chat-banner" id="chat-banner" hidden></div>
           <div class="messages" id="messages"></div>
           <div class="typing" id="typing"></div>
           <div class="composer">
@@ -1148,6 +1216,113 @@ const GTIN = {
 };
 
 /* =====================================================================
+   MAGASINS : uniquement les Carrefour de la ville de Nice (ou Nice TNL seul).
+   Aucune autre enseigne, aucune autre ville. Lieux et prix : Open Prices.
+   ===================================================================== */
+const Store = {
+  API: 'https://prices.openfoodfacts.org/api/v1',
+  NICE: { lat: 43.7031, lon: 7.2661 },
+  TNL: { lat: 43.7065, lon: 7.2863 },           // centre commercial Nice TNL, bd du Général Louis Delfino
+  TNL_URL: 'https://www.carrefour.fr/magasin/nice-tnl/drive',
+  scope: store.get('cpt_scope', 'nice') === 'tnl' ? 'tnl' : 'nice',
+  _locs: null, _locsP: null,
+  norm: s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(),
+  km(a, b) {
+    const r = Math.PI / 180, dLa = (b.lat - a.lat) * r, dLo = (b.lon - a.lon) * r;
+    const h = Math.sin(dLa / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLo / 2) ** 2;
+    return 12742 * Math.asin(Math.sqrt(h));
+  },
+  pos(L) { const lat = +L.osm_lat, lon = +L.osm_lon; return Number.isFinite(lat) && Number.isFinite(lon) && (lat || lon) ? { lat, lon } : null; },
+  isCarrefour(L) { return /carrefour/.test(this.norm(`${L.osm_brand || ''} ${L.osm_name || ''}`)); },
+  inNice(L) {
+    const city = this.norm(L.osm_address_city).trim();
+    if (city) return city === 'nice';                 // Saint-Laurent-du-Var, Cagnes, Antibes… exclus
+    const p = this.pos(L); if (p) return this.km(p, this.NICE) < 5;
+    return /(^|,)\s*nice\s*(,|$)/.test(this.norm(L.osm_display_name));
+  },
+  isTNL(L) {
+    if (!L) return false;
+    if (/\btnl\b|delfino/.test(this.norm(`${L.osm_name || ''} ${L.osm_display_name || ''}`))) return true;
+    const p = this.pos(L); return !!p && this.km(p, this.TNL) < 0.5;
+  },
+  ok(L) { return !!L && L.type !== 'ONLINE' && this.isCarrefour(L) && this.inNice(L); },
+  label(s = this.scope) { return s === 'tnl' ? 'Carrefour Nice TNL' : 'Carrefour Nice'; },
+  storeName(L) {
+    if (this.isTNL(L)) return 'Carrefour Nice TNL';
+    const name = (L.osm_name || 'Carrefour').trim();
+    const parts = String(L.osm_display_name || '').split(',').map(s => s.trim()).filter(Boolean);
+    const street = parts.slice(1, 4).filter(s => !/^\d+$/.test(s) && this.norm(s) !== 'nice')[0];
+    return street ? `${name} · ${street}` : `${name} · Nice`;
+  },
+  slim(L) { const o = {}; for (const k of ['id', 'type', 'osm_name', 'osm_brand', 'osm_display_name', 'osm_address_city', 'osm_lat', 'osm_lon']) if (L[k] != null) o[k] = L[k]; return o; },
+  /** Liste des magasins Carrefour de Nice connus d’Open Prices (cache 24 h). null = service injoignable. */
+  async locations() {
+    if (this._locs) return this._locs;
+    const c = store.get('cpt_locs', null);
+    if (c && Array.isArray(c.list) && Date.now() - c.at < 864e5) return (this._locs = c.list);
+    if (this._locsP) return this._locsP;
+    return this._locsP = (async () => {
+      try {
+        const get = async qs => {
+          const r = await Products.fetchJSON(`${this.API}/locations?${qs}&size=100`, 10000);
+          if (!r.ok || !r.data) throw new Error('lieux ' + r.status);
+          return r.data.items || r.data.results || (Array.isArray(r.data) ? r.data : []);
+        };
+        const res = await Promise.allSettled([get('osm_name__like=carrefour&osm_address_city__like=nice'), get('osm_name__like=tnl')]);
+        if (res.every(x => x.status === 'rejected')) throw new Error('lieux');
+        const seen = new Set(), list = [];
+        for (const x of res) if (x.status === 'fulfilled') for (const L of x.value) {
+          if (!L || seen.has(L.id) || !this.ok(L)) continue;
+          seen.add(L.id); list.push({ id: L.id, tnl: this.isTNL(L), L: this.slim(L) });
+        }
+        store.set('cpt_locs', { at: Date.now(), list });
+        return (this._locs = list);
+      } catch (e) { return c && Array.isArray(c.list) ? c.list : null; }
+      finally { this._locsP = null; }
+    })();
+  },
+  mapPrice(it, L) {
+    const P = it.product || {};
+    return {
+      code: it.product_code || P.code || '', name: (P.product_name || '').trim(), brand: P.brands || '', image: P.image_url || '',
+      category: it.category_tag || '', type: it.type || (it.product_code ? 'PRODUCT' : 'CATEGORY'),
+      price: +it.price, currency: it.currency || 'EUR', date: it.date, per: it.price_per,
+      promo: !!it.price_is_discounted, before: it.price_without_discount != null ? +it.price_without_discount : null,
+      store: this.storeName(L), tnl: this.isTNL(L)
+    };
+  },
+  /** Prix Open Prices filtrés : Carrefour + ville de Nice (+ TNL seul si choisi). opts.all = tous les Carrefour de Nice. */
+  async prices(params = {}, size = 60, opts = {}) {
+    const locs = await this.locations();
+    const scope = opts.all ? 'nice' : this.scope;
+    const q = new URLSearchParams({ ...params, order_by: '-date', size: String(size) });
+    const byId = new Map((locs || []).map(x => [x.id, x]));
+    if (locs) {
+      const ids = locs.filter(x => scope !== 'tnl' || x.tnl).map(x => x.id);
+      if (!ids.length) return [];
+      q.set('location_id__in', ids.join(','));
+    } else { q.set('location__osm_name__contains', 'Carrefour'); q.set('size', '100'); }
+    let r = await Products.fetchJSON(`${this.API}/prices?${q}`, 12000);
+    if (!r.ok && !locs && (r.status === 400 || r.status === 422)) { q.delete('location__osm_name__contains'); r = await Products.fetchJSON(`${this.API}/prices?${q}`, 12000); }
+    if (!r.ok || !r.data || !Array.isArray(r.data.items)) throw new Error('prix indisponibles');
+    const out = [];
+    for (const it of r.data.items) {
+      if (!Number.isFinite(+it.price)) continue;
+      const L = it.location || (byId.get(it.location_id) || {}).L;
+      if (!this.ok(L) || (scope === 'tnl' && !this.isTNL(L))) continue;   // double contrôle côté appareil
+      out.push(this.mapPrice(it, L));
+    }
+    return out;
+  },
+  setScope(s) {
+    this.scope = s === 'tnl' ? 'tnl' : 'nice'; store.set('cpt_scope', this.scope);
+    $$('#q-scope [data-s]').forEach(b => b.classList.toggle('on', b.dataset.s === this.scope));
+    Search.paint();
+    Products.refreshPrices();
+  }
+};
+
+/* =====================================================================
    PRODUITS : Open Food Facts (+ bases sœurs), prix Open Prices, fiche magasin
    ===================================================================== */
 const Products = {
@@ -1214,18 +1389,10 @@ const Products = {
     netFail += rest.filter(x => x.status === 'rejected').length;
     return { product: null, notFound: netFail < this.sources.length, offline: netFail === this.sources.length };
   },
+  /** Prix relevés uniquement dans les Carrefour de Nice (ou seulement Nice TNL selon le réglage). */
   async prices(code) {
-    const r = await this.fetchJSON(`https://prices.openfoodfacts.org/api/v1/prices?product_code=${code}&order_by=-date&size=40`, 10000);
-    if (!r.ok || !r.data || !Array.isArray(r.data.items)) throw new Error('prix indisponibles');
-    return r.data.items.filter(it => Number.isFinite(+it.price)).map(it => {
-      const L = it.location || {};
-      const name = L.osm_name || L.website_url || (L.type === 'ONLINE' ? 'En ligne' : 'Magasin');
-      return {
-        price: +it.price, currency: it.currency || 'EUR', date: it.date, per: it.price_per,
-        promo: !!it.price_is_discounted, before: it.price_without_discount != null ? +it.price_without_discount : null,
-        store: name, city: L.osm_address_city || '', carrefour: /carrefour/i.test(`${L.osm_brand || ''} ${L.osm_name || ''}`)
-      };
-    });
+    const items = await Store.prices({ product_code: code }, 60);
+    return items.filter(x => x.currency === 'EUR');
   },
   storeInfo(code) { return store.get('cpt_storeinfo', {})[code] || null; },
   saveStoreInfo(code, info) {
@@ -1235,12 +1402,29 @@ const Products = {
   },
 
   /* ---------- affichage ---------- */
+  isLocal: code => /^local:/.test(String(code || '')),
+  /** Fiche créée sur l’appareil pour un article sans code-barres. */
+  createLocal(name) {
+    const id = 'local:' + uid();
+    this.saveStoreInfo(id, { name: String(name || '').trim().slice(0, 80) || 'Article sans code-barres' });
+    this.show(id);
+    return id;
+  },
   async show(rawCode, opts = {}) {
-    const code = GTIN.clean(rawCode);
-    if (code.length < 6) { toast('Code trop court : vérifiez les chiffres.', 'error'); return; }
+    const local = this.isLocal(rawCode);
+    const code = local ? String(rawCode) : GTIN.clean(rawCode);
+    if (!local && code.length < 6) { toast('Code trop court : vérifiez les chiffres.', 'error'); return; }
     const token = ++this.token;
     $('#result-empty').hidden = true;
     const box = $('#result'); box.hidden = false;
+    if (local) {
+      if (!this.storeInfo(code)) { toast('Cette fiche n’existe pas sur cet appareil.', 'error'); return; }
+      this.render(code, null, {});
+      if (window.innerWidth < 1080 && !opts.noScroll) setTimeout(() => $('#result-card').scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+      History.add(code, null);
+      this.loadPrices(code, token);
+      return;
+    }
     const cached = this.cacheGet(code);
     if (cached && cached.p) this.render(code, cached.p, { cached: true });
     else box.innerHTML = this.skeleton(code);
@@ -1270,8 +1454,10 @@ const Products = {
   scoreChip(label, g) { return g ? `<span class="score"><span>${label}</span><span class="g-${g}">${String(g).toUpperCase()}</span></span>` : ''; },
   render(code, p, st = {}) {
     const info = this.storeInfo(code) || {};
-    const v = GTIN.verify(code);
-    const name = p ? (p.name || info.name || 'Produit sans nom') : (info.name || 'Produit inconnu');
+    const local = this.isLocal(code);
+    if (local) st = { ...st, notFound: false, offline: false, cached: false };
+    const v = local ? null : GTIN.verify(code);
+    const name = p ? (p.name || info.name || 'Produit sans nom') : (info.name || (local ? 'Article sans code-barres' : 'Produit inconnu'));
     const brand = p ? [p.brand, p.quantity].filter(Boolean).join(' · ') : (info.brand || '');
     this.current = { code, name, brand: p ? p.brand : (info.brand || ''), quantity: p ? p.quantity : '', image: p ? p.image : '', price: info.price ?? null, found: !!p };
     const nutri = p && p.nutrition && Object.values(p.nutrition).some(x => x != null) ? p.nutrition : null;
@@ -1282,9 +1468,9 @@ const Products = {
         <div class="product-photo">${icon('Package')}${p && p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" style="position:absolute;inset:0;background:#fff" onerror="this.remove()">` : ''}</div>
         <div class="product-meta">
           <div class="product-name">${esc(name)}</div>
-          <div class="product-brand">${esc(brand || (p ? 'Marque non renseignée' : 'Pas encore référencé dans Open Food Facts'))}</div>
+          <div class="product-brand">${esc(brand || (p ? 'Marque non renseignée' : local ? 'Fiche magasin créée sur cet appareil' : 'Pas encore référencé dans Open Food Facts'))}</div>
           <div class="product-chips">
-            <span class="chip blue mono" title="${GTIN.label(code)}">${esc(code)}</span>
+            ${local ? `<span class="chip amber">${icon('Tag')}Sans code-barres</span>` : `<span class="chip blue mono" title="${GTIN.label(code)}">${esc(code)}</span>`}
             ${v && !v.ok ? `<span class="chip red">${icon('TriangleAlert')}Clé invalide (attendu ${v.expected})</span>` : ''}
             ${p ? this.scoreChip('Nutri', p.nutriscore) + this.scoreChip('Éco', p.ecoscore) + (p.nova ? `<span class="score"><span>NOVA</span><span class="g-${['', 'a', 'c', 'd', 'e'][p.nova]}">${p.nova}</span></span>` : '') : ''}
             ${st.cached ? `<span class="chip">${icon('Clock')}Hors ligne / cache</span>` : ''}
@@ -1294,13 +1480,14 @@ const Products = {
       </div>
       <div class="kpis">
         <div class="kpi"><small>Prix magasin</small><strong class="tnum" id="kpi-store">${info.price != null ? euro(info.price) : '—'}</strong><span>${info.price != null ? 'fiche magasin' : 'à renseigner'}</span></div>
-        <div class="kpi"><small>Prix relevé</small><strong class="tnum" id="kpi-price">${icon('LoaderCircle', 'spin')}</strong><span id="kpi-price-sub">Open Prices</span></div>
+        <div class="kpi"><small>Prix Carrefour</small><strong class="tnum" id="kpi-price">${icon('LoaderCircle', 'spin')}</strong><span id="kpi-price-sub">${Store.scope === 'tnl' ? 'Nice TNL' : 'Nice'}</span></div>
         <div class="kpi"><small>Rayon</small><strong id="kpi-aisle">${esc(info.aisle || '—')}</strong><span>${esc(stockOpts.find(s => s[0] === info.stock)?.[1] || 'stock non renseigné')}</span></div>
       </div>
       ${st.notFound ? `<div class="subcard" style="border-color:var(--amber-soft)"><h4>${icon('Info')}Produit introuvable</h4><p class="muted" style="font-size:13.5px">Ce code n’est référencé ni dans Open Food Facts, ni dans ses bases Beauté, Animaux et Objets. Créez une fiche magasin ci-dessous pour le retrouver la prochaine fois, ou ajoutez-le à Open Food Facts.</p></div>` : ''}
       ${st.offline ? `<div class="subcard"><h4>${icon('WifiOff')}Recherche impossible</h4><p class="muted" style="font-size:13.5px">Pas de réponse des bases produits (connexion absente ou instable). La fiche magasin reste disponible.</p></div>` : ''}
       <div class="subcard">
         <h4>${icon('Store')}Fiche magasin<span class="right">sur cet appareil</span></h4>
+        ${local ? `<p class="faint" style="font-size:12.5px;margin:-4px 0 10px">Article sans code-barres : notez son nom, son prix et son rayon. Vous le retrouverez avec la recherche par nom.</p>` : ''}
         ${!p ? `<div class="row" style="margin-bottom:10px"><label class="field"><span>Nom du produit</span><input class="input" id="si-name" value="${esc(info.name || '')}" placeholder="Ex : Biscuits nature 500 g"></label><label class="field"><span>Marque</span><input class="input" id="si-brand" value="${esc(info.brand || '')}" placeholder="Ex : Carrefour"></label></div>` : ''}
         <div class="store-grid">
           <label class="field"><span>Prix (€)</span><input class="input tnum" id="si-price" type="number" inputmode="decimal" step="0.01" min="0" value="${info.price ?? ''}" placeholder="0,00"></label>
@@ -1310,19 +1497,20 @@ const Products = {
         <label class="field" style="margin-top:10px"><span>Note</span><input class="input" id="si-note" maxlength="140" value="${esc(info.note || '')}" placeholder="Ex : tête de gondole jusqu’à dimanche"></label>
         <div class="btn-row" style="margin-top:12px"><button class="btn btn-soft btn-sm" id="si-save">${icon('Check', 'sm')}Enregistrer la fiche</button>${info.at ? `<span class="faint" style="font-size:12px;align-self:center">Modifiée ${timeAgo(info.at)}</span>` : ''}</div>
       </div>
-      <div class="subcard" id="prices-box"><h4>${icon('Tag')}Prix relevés par les clients<span class="right">Open Prices</span></h4><div id="prices-list"><div class="skeleton" style="height:16px;margin:8px 0"></div><div class="skeleton" style="height:16px;margin:8px 0;width:70%"></div></div></div>
+      <div class="subcard" id="prices-box"><h4>${icon('Tag')}<span id="prices-title">Prix relevés chez ${Store.label()}</span><span class="right">Open Prices</span></h4><div id="prices-list"><div class="skeleton" style="height:16px;margin:8px 0"></div><div class="skeleton" style="height:16px;margin:8px 0;width:70%"></div></div></div>
       ${nutri ? `<div class="subcard"><h4>${icon('Leaf')}Valeurs nutritionnelles<span class="right">pour 100 g / 100 ml</span></h4>
         <table class="nutri-table"><tr><td>Énergie</td><td>${fmtN(nutri.kcal, 'kcal')}</td></tr><tr><td>Matières grasses</td><td>${fmtN(nutri.fat, 'g')}</td></tr><tr><td>dont saturées</td><td>${fmtN(nutri.sat, 'g')}</td></tr><tr><td>Glucides</td><td>${fmtN(nutri.carbs, 'g')}</td></tr><tr><td>dont sucres</td><td>${fmtN(nutri.sugars, 'g')}</td></tr><tr><td>Fibres</td><td>${fmtN(nutri.fiber, 'g')}</td></tr><tr><td>Protéines</td><td>${fmtN(nutri.proteins, 'g')}</td></tr><tr><td>Sel</td><td>${fmtN(nutri.salt, 'g')}</td></tr></table></div>` : ''}
       ${p && (p.labels.length || p.allergens.length || p.categories.length) ? `<div class="subcard"><h4>${icon('Info')}Infos</h4><div class="product-chips" style="margin:0">
         ${p.categories.map(c => `<span class="chip">${esc(c)}</span>`).join('')}${p.labels.map(c => `<span class="chip green">${esc(c)}</span>`).join('')}${p.allergens.map(c => `<span class="chip amber">${icon('TriangleAlert')}${esc(c)}</span>`).join('')}</div></div>` : ''}
       <div class="result-actions">
-        <button class="btn btn-primary btn-sm" data-act="barcode">${icon('Barcode', 'sm')}Code-barres</button>
-        <button class="btn btn-ghost btn-sm" data-act="promo">${icon('Percent', 'sm')}Calculer une promo</button>
+        ${local ? '' : `<button class="btn btn-primary btn-sm" data-act="barcode">${icon('Barcode', 'sm')}Code-barres</button>`}
+        <button class="btn ${local ? 'btn-primary' : 'btn-ghost'} btn-sm" data-act="promo">${icon('Percent', 'sm')}Calculer une promo</button>
         <button class="btn btn-ghost btn-sm" data-act="share">${icon('Send', 'sm')}Partager</button>
-        <a class="btn btn-ghost btn-sm" href="https://www.carrefour.fr/s?q=${encodeURIComponent(code)}" target="_blank" rel="noopener">${icon('ExternalLink', 'sm')}carrefour.fr</a>
-        <a class="btn btn-ghost btn-sm" href="${p ? p.host : 'https://world.openfoodfacts.org'}/product/${encodeURIComponent(code)}" target="_blank" rel="noopener">${icon('ExternalLink', 'sm')}${p ? 'Fiche ' + esc(p.source) : 'Ajouter à Open Food Facts'}</a>
+        <a class="btn btn-ghost btn-sm" href="https://www.carrefour.fr/s?q=${encodeURIComponent(local ? name : code)}" target="_blank" rel="noopener">${icon('ExternalLink', 'sm')}carrefour.fr</a>
+        ${local ? `<button class="btn btn-ghost btn-sm" data-act="del-local" style="color:var(--red)">${icon('Trash2', 'sm')}Supprimer la fiche</button>`
+        : `<a class="btn btn-ghost btn-sm" href="${p ? p.host : 'https://world.openfoodfacts.org'}/product/${encodeURIComponent(code)}" target="_blank" rel="noopener">${icon('ExternalLink', 'sm')}${p ? 'Fiche ' + esc(p.source) : 'Ajouter à Open Food Facts'}</a>`}
       </div>
-      <div class="src-note">${icon('Info', 'sm')}<span>Données ${p ? esc(p.source) : 'Open Food Facts'} (licence ODbL), prix Open Prices : contributions de clients, à vérifier en rayon.</span></div>`;
+      <div class="src-note">${icon('Info', 'sm')}<span>${local ? 'Fiche enregistrée sur cet appareil.' : `Données ${p ? esc(p.source) : 'Open Food Facts'} (licence ODbL).`} Prix : relevés Open Prices dans les Carrefour de Nice uniquement, à vérifier en rayon. Sur carrefour.fr, choisissez le magasin Nice TNL pour voir ses prix.</span></div>`;
     const box = $('#result');
     box.innerHTML = html;
     A.fromTo(box.children, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: .45, ease: 'power3.out', stagger: .04, clearProps: 'transform' });
@@ -1330,48 +1518,70 @@ const Products = {
   },
   bind(code, found) {
     const box = $('#result');
+    const local = this.isLocal(code);
     $('#si-save', box).onclick = () => {
       const price = num($('#si-price', box).value);
       const data = { price: Number.isFinite(price) ? Math.round(price * 100) / 100 : null, aisle: $('#si-aisle', box).value.trim(), stock: $('#si-stock', box).value, note: $('#si-note', box).value.trim() };
       if (!found) { data.name = $('#si-name', box).value.trim(); data.brand = $('#si-brand', box).value.trim(); }
+      if (local && !data.name) { toast('Donnez un nom à l’article pour le retrouver.', 'error'); $('#si-name', box).focus(); return; }
       this.saveStoreInfo(code, data);
-      const cached = this.cacheGet(code);
-      this.render(code, cached && cached.p, { notFound: !found && !(cached && cached.p) });
+      const cached = local ? null : this.cacheGet(code);
+      this.render(code, cached && cached.p, { notFound: !local && !found && !(cached && cached.p) });
       this.loadPrices(code, this.token);
       History.add(code, cached && cached.p);
       toast('Fiche magasin enregistrée.', 'success');
     };
     box.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
       const c = this.current; if (!c) return;
+      if (b.dataset.act === 'del-local') {
+        if (!confirm('Supprimer la fiche « ' + c.name + ' » de cet appareil ?')) return;
+        this.saveStoreInfo(c.code, null); store.set(History.key, History.all().filter(h => h.code !== c.code)); History.render();
+        this.current = null; $('#result').hidden = true; $('#result').innerHTML = ''; $('#result-empty').hidden = false;
+        toast('Fiche supprimée.', 'info'); return;
+      }
       if (b.dataset.act === 'barcode') Barcodes.prefill(c.code, c.name);
       if (b.dataset.act === 'promo') Promo.prefill(c.name, c.price ?? this.lastSeenPrice);
       if (b.dataset.act === 'share') Chat.shareFromTools({ type: 'product', code: c.code, name: c.name, brand: c.brand, image: c.image, quantity: c.quantity, price: c.price ?? null });
     });
   },
   lastSeenPrice: null,
+  refreshPrices() {
+    if (!this.current || !$('#prices-list')) return;
+    $('#prices-title').textContent = 'Prix relevés chez ' + Store.label();
+    $('#kpi-price').innerHTML = icon('LoaderCircle', 'spin');
+    this.loadPrices(this.current.code, this.token);
+  },
+  priceRows(items, withName) {
+    return items.map(x => `<div class="price-row"><div class="p-store"><b>${esc(x.store)}</b><small>${esc([withName ? (x.label || x.name) : '', x.date && new Date(x.date).toLocaleDateString('fr-FR')].filter(Boolean).join(' · '))}${x.per === 'KILOGRAM' ? ' · au kg' : x.per === 'UNIT' ? ' · à l’unité' : ''}</small></div>${x.promo ? `<span class="chip red">Promo${x.before ? ' (au lieu de ' + euro(x.before) + ')' : ''}</span>` : ''}<span class="p-val">${euro(x.price)}</span></div>`).join('');
+  },
   async loadPrices(code, token) {
     const list = $('#prices-list'), kpi = $('#kpi-price'), sub = $('#kpi-price-sub');
+    if (!list) return;
     this.lastSeenPrice = null;
+    const local = this.isLocal(code), name = (this.current && this.current.name) || '';
+    const carrefourLink = `<a href="https://www.carrefour.fr/s?q=${encodeURIComponent(local ? name : code)}" target="_blank" rel="noopener">carrefour.fr</a> (magasin <a href="${Store.TNL_URL}" target="_blank" rel="noopener">Nice TNL</a>)`;
     try {
-      const items = (await this.prices(code)).filter(x => x.currency === 'EUR');
+      let items;
+      if (local) items = (await Search.niceByName(name)).filter(x => Store.scope !== 'tnl' || x.tnl).slice(0, 8);
+      else items = await this.prices(code);
       if (token !== this.token || !$('#prices-list')) return;
+      items.sort((a, b) => (b.tnl - a.tnl) || String(b.date || '').localeCompare(String(a.date || '')));
       if (!items.length) {
-        list.innerHTML = `<p class="faint" style="font-size:13.5px">Aucun prix partagé pour ce produit pour l’instant. Les clients peuvent en ajouter sur <a href="https://prices.openfoodfacts.org" target="_blank" rel="noopener">prices.openfoodfacts.org</a>.</p>`;
-        kpi.textContent = '—'; sub.textContent = 'aucun relevé'; return;
+        list.innerHTML = `<p class="faint" style="font-size:13.5px">Aucun prix relevé chez ${Store.label()} pour ${local ? 'un article de ce nom' : 'ce produit'}. Vérifiez sur ${carrefourLink}, ou ajoutez le prix sur <a href="https://prices.openfoodfacts.org" target="_blank" rel="noopener">Open Prices</a>.</p>`;
+        kpi.textContent = '—'; sub.textContent = 'aucun relevé à Nice'; return;
       }
-      const carre = items.filter(x => x.carrefour);
-      const ref = carre[0] || items[0];
+      const ref = items[0];
       this.lastSeenPrice = ref.price;
       kpi.textContent = euro(ref.price);
-      sub.textContent = `${ref.carrefour ? 'Carrefour' : ref.store}${ref.date ? ' · ' + new Date(ref.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : ''}`;
+      sub.textContent = `${ref.tnl ? 'Nice TNL' : 'Nice'}${ref.date ? ' · ' + new Date(ref.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : ''}`;
       const year = items.filter(x => !x.date || Date.now() - new Date(x.date) < 365 * 864e5);
       const vals = year.map(x => x.price);
-      const shown = [...carre.slice(0, 4), ...items.filter(x => !x.carrefour).slice(0, Math.max(2, 6 - Math.min(4, carre.length)))].slice(0, 6);
-      list.innerHTML = (vals.length > 1 ? `<div class="product-chips" style="margin:0 0 8px"><span class="chip">Min ${euro(Math.min(...vals))}</span><span class="chip">Max ${euro(Math.max(...vals))}</span><span class="chip">${year.length} relevé${year.length > 1 ? 's' : ''} sur 12 mois</span></div>` : '') +
-        shown.map(x => `<div class="price-row ${x.carrefour ? 'carrefour' : ''}"><div class="p-store"><b>${esc(x.store)}</b><small>${esc([x.city, x.date && new Date(x.date).toLocaleDateString('fr-FR')].filter(Boolean).join(' · '))}${x.per === 'KILOGRAM' ? ' · au kg' : ''}</small></div>${x.promo ? `<span class="chip red">Promo${x.before ? ' (au lieu de ' + euro(x.before) + ')' : ''}</span>` : ''}<span class="p-val">${euro(x.price)}</span></div>`).join('');
+      list.innerHTML = (vals.length > 1 && !local ? `<div class="product-chips" style="margin:0 0 8px"><span class="chip">Min ${euro(Math.min(...vals))}</span><span class="chip">Max ${euro(Math.max(...vals))}</span><span class="chip">${year.length} relevé${year.length > 1 ? 's' : ''} sur 12 mois</span></div>` : '') +
+        (local ? `<p class="faint" style="font-size:12.5px;margin-bottom:6px">Articles au nom proche relevés à Nice :</p>` : '') +
+        this.priceRows(items.slice(0, 6), local);
     } catch (e) {
       if (token !== this.token || !$('#prices-list')) return;
-      list.innerHTML = `<p class="faint" style="font-size:13.5px">Prix indisponibles pour le moment (service Open Prices injoignable).</p>`;
+      list.innerHTML = `<p class="faint" style="font-size:13.5px">Prix indisponibles pour le moment (service Open Prices injoignable). Vérifiez sur ${carrefourLink}.</p>`;
       kpi.textContent = '—'; sub.textContent = 'indisponible';
     }
   }
@@ -1392,13 +1602,13 @@ const History = {
   },
   render() {
     const q = ($('#history-search').value || '').toLowerCase().trim();
-    const list = this.all().filter(h => !q || `${h.name} ${h.brand} ${h.code}`.toLowerCase().includes(q));
+    const list = this.all().filter(h => !q || Store.norm(`${h.name} ${h.brand} ${Products.isLocal(h.code) ? '' : h.code}`).includes(Store.norm(q)));
     const box = $('#scan-history');
     if (!this.all().length) { box.innerHTML = `<div class="empty"><div class="e-ic">${icon('History')}</div><b>Aucun scan</b>Les produits scannés apparaîtront ici, même hors ligne.</div>`; return; }
     if (!list.length) { box.innerHTML = `<div class="empty">Aucun résultat.</div>`; return; }
     box.innerHTML = list.slice(0, 60).map(h => `<div class="item click" data-code="${esc(h.code)}">
         ${h.img ? `<img class="item-thumb" src="${esc(h.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.outerHTML='<span class=&quot;item-thumb ph&quot;></span>'">` : `<span class="item-thumb ph">${icon('Package')}</span>`}
-        <div class="item-main"><div class="item-title">${esc(h.name)}</div><div class="item-sub"><span class="mono">${esc(h.code)}</span>${h.brand ? ' · ' + esc(h.brand) : ''}</div></div>
+        <div class="item-main"><div class="item-title">${esc(h.name)}</div><div class="item-sub">${Products.isLocal(h.code) ? 'Sans code-barres' : `<span class="mono">${esc(h.code)}</span>`}${h.brand ? ' · ' + esc(h.brand) : ''}</div></div>
         <div class="item-side"><span class="faint" style="font-size:12px">${timeAgo(h.at)}</span><button class="icon-btn sm danger" data-del="${esc(h.code)}" title="Retirer" aria-label="Retirer">${icon('X', 'sm')}</button></div></div>`).join('');
   },
   bind() {
@@ -1416,9 +1626,237 @@ const History = {
     $('#btn-export-history').onclick = () => {
       const rows = this.all(); if (!rows.length) return toast('Historique vide.', 'info');
       const si = store.get('cpt_storeinfo', {});
-      const csv = [['Code', 'Produit', 'Marque', 'Prix magasin', 'Rayon', 'Date']].concat(rows.map(h => [h.code, h.name, h.brand, si[h.code]?.price ?? '', si[h.code]?.aisle ?? '', new Date(h.at).toLocaleString('fr-FR')]))
+      const csv = [['Code', 'Produit', 'Marque', 'Prix magasin', 'Rayon', 'Date']].concat(rows.map(h => [Products.isLocal(h.code) ? '' : h.code, h.name, h.brand, si[h.code]?.price ?? '', si[h.code]?.aisle ?? '', new Date(h.at).toLocaleString('fr-FR')]))
         .map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\r\n');
       const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })); a.download = `scans_${new Date().toISOString().slice(0, 10)}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    };
+  }
+};
+
+/* =====================================================================
+   RECHERCHE PAR NOM — résultats Carrefour à Nice uniquement
+   1. mes fiches magasin (y compris les articles sans code-barres)
+   2. prix relevés dans les Carrefour de Nice (Open Prices), fruits et légumes au poids compris
+   3. catalogue des produits vendus chez Carrefour (Open Food Facts), avec le prix à Nice s’il est connu
+   ===================================================================== */
+const Search = {
+  OFF: 'https://world.openfoodfacts.org/cgi/search.pl',
+  SAL: 'https://search.openfoodfacts.org/search',
+  FIELDS: 'code,product_name,product_name_fr,brands,quantity,image_front_small_url,image_front_url,stores,stores_tags',
+  OTHER_BRANDS: /\b(leclerc|marque repere|systeme u|super u|hyper u|auchan|intermarche|monoprix|lidl|aldi|casino|franprix|netto|leader price|cora|grand frais|picard)\b/,
+  mem: new Map(), catalog: null, catalogP: null, state: null, token: 0,
+  priced: store.get('cpt_q_priced', false),
+  /* fruits, légumes et vrac : mot français → catégorie Open Prices (anglais) */
+  PRODUCE: {
+    'pomme de terre': 'potato', 'patate douce': 'sweet-potato', 'patate': 'potato', 'tomate': 'tomato', 'pomme': 'apple', 'poire': 'pear',
+    'banane': 'banana', 'carotte': 'carrot', 'citron vert': 'lime', 'citron': 'lemon', 'orange': 'orange', 'clementine': 'clementine',
+    'mandarine': 'mandarin', 'pamplemousse': 'grapefruit', 'courgette': ['courgette', 'zucchini'], 'aubergine': ['aubergine', 'eggplant'],
+    'concombre': 'cucumber', 'oignon': 'onion', 'ail': 'garlic', 'echalote': 'shallot', 'poireau': 'leek', 'salade': ['lettuce', 'salad'],
+    'laitue': 'lettuce', 'peche': 'peach', 'nectarine': 'nectarine', 'abricot': 'apricot', 'fraise': 'strawberr', 'framboise': 'raspberr',
+    'myrtille': 'blueberr', 'raisin': ['grape', 'table-grape'], 'kiwi': 'kiwi', 'pasteque': 'watermelon', 'melon': 'melon', 'cerise': 'cherr',
+    'avocat': 'avocado', 'mangue': 'mango', 'ananas': 'pineapple', 'poivron': ['bell-pepper', 'sweet-pepper', 'pepper'], 'champignon': 'mushroom',
+    'brocoli': 'broccoli', 'chou fleur': 'cauliflower', 'chou': 'cabbage', 'epinard': 'spinach', 'haricot': 'bean', 'fenouil': 'fennel',
+    'artichaut': 'artichoke', 'asperge': 'asparagus', 'radis': 'radish', 'betterave': 'beet', 'celeri': ['celery', 'celeriac'], 'navet': 'turnip',
+    'potiron': 'pumpkin', 'citrouille': 'pumpkin', 'courge': 'squash', 'figue': 'fig', 'prune': 'plum', 'grenade': 'pomegranate',
+    'noix de coco': 'coconut', 'datte': 'date', 'noix': 'walnut', 'chataigne': 'chestnut', 'persil': 'parsley', 'basilic': 'basil',
+    'menthe': 'mint', 'coriandre': 'coriander', 'gingembre': 'ginger', 'litchi': 'lychee', 'endive': ['endive', 'chicor'], 'blette': 'chard',
+    'mais': 'corn', 'oeuf': 'egg', 'kaki': 'persimmon', 'goyave': 'guava', 'papaye': 'papaya', 'fruit de la passion': 'passion-fruit', 'mache': 'lamb-s-lettuce'
+  },
+  stem: w => w.length > 3 ? w.replace(/[sx]$/, '') : w,
+  words(s) { return Store.norm(s).replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(w => w.length > 1 || /\d/.test(w)).map(this.stem); },
+  /** tous les mots de la recherche doivent apparaître en début de mot dans le texte */
+  match(text, ws) { const t = ' ' + this.words(text).join(' '); return ws.length > 0 && ws.every(w => t.includes(' ' + w)); },
+  produceFor(q) {
+    const nq = ' ' + this.words(q).join(' ') + ' ', hits = [];
+    for (const fr of Object.keys(this.PRODUCE).sort((a, b) => b.length - a.length)) {
+      const key = ' ' + this.words(fr).join(' ') + ' ';
+      if (nq.includes(key) && !hits.some(h => h.fr.includes(fr))) hits.push({ fr, en: [].concat(this.PRODUCE[fr]) });
+    }
+    return hits;
+  },
+  catMatches(tag, en) { const t = String(tag || '').toLowerCase(); return en.some(e => new RegExp(`(^|[-:])${e.replace(/[-]/g, '[-]')}(s|es|ies|y)?($|-)`).test(t)); },
+  catLabel(tag) { const t = String(tag || '').replace(/^[a-z]{2}:/, '').replace(/-/g, ' '); return t ? t[0].toUpperCase() + t.slice(1) : 'Vrac'; },
+
+  /* ---------- sources ---------- */
+  /** derniers prix relevés dans tous les Carrefour de Nice (cache 20 min) */
+  async catalogue() {
+    if (this.catalog && Date.now() - this.catalog.at < 20 * 60000) return this.catalog.items;
+    if (this.catalogP) return this.catalogP;
+    return this.catalogP = (async () => {
+      try {
+        const items = [];
+        for (let page = 1; page <= 3; page++) {
+          const chunk = await Store.prices({ page: String(page) }, 100, { all: true });
+          items.push(...chunk);
+          if (chunk.length < 90) break;
+        }
+        this.catalog = { at: Date.now(), items };
+        try { store.set('cpt_catalog', { at: Date.now(), items: items.slice(0, 300) }); } catch (e) { }
+        return items;
+      } catch (e) {
+        const c = store.get('cpt_catalog', null);
+        if (c && Array.isArray(c.items)) return c.items;
+        throw e;
+      } finally { this.catalogP = null; }
+    })();
+  },
+  /** prix Carrefour Nice dont le nom (ou la catégorie vrac) correspond à la recherche */
+  async niceByName(q) {
+    const ws = this.words(q); if (!ws.length) return [];
+    const produce = this.produceFor(q), items = await this.catalogue();
+    const out = [], seen = new Set();
+    for (const x of items) {
+      let label = '';
+      if (x.type === 'CATEGORY' || !x.code) {
+        const p = produce.find(h => this.catMatches(x.category, h.en));
+        if (p || this.match(this.catLabel(x.category), ws)) label = (p ? p.fr[0].toUpperCase() + p.fr.slice(1) : this.catLabel(x.category)) + ' · vrac';
+      } else if (this.match(`${x.name} ${x.brand}`, ws)) label = x.name || x.code;
+      if (!label) continue;
+      const key = (x.code || x.category) + '|' + x.store;
+      if (seen.has(key)) continue;               // le relevé le plus récent par article et par magasin
+      seen.add(key); out.push({ ...x, label });
+    }
+    return out;
+  },
+  async off(q) {
+    const key = Store.norm(q);
+    if (this.mem.has(key)) return this.mem.get(key);
+    const rate = () => Object.assign(new Error('rate'), { rate: true });
+    let list = null;
+    const params = { search_terms: q, search_simple: 1, action: 'process', json: 1, page_size: 40, fields: this.FIELDS, sort_by: 'unique_scans_n', lc: 'fr', tagtype_0: 'stores', tag_contains_0: 'contains', tag_0: 'carrefour', tagtype_1: 'countries', tag_contains_1: 'contains', tag_1: 'france' };
+    let r = null; try { r = await Products.fetchJSON(`${this.OFF}?${new URLSearchParams(params)}`, 15000); } catch (e) { }
+    if (r && r.status === 429) throw rate();
+    if (r && r.ok && r.data && Array.isArray(r.data.products)) list = r.data.products;
+    else {                                       // secours : nouveau moteur de recherche Open Food Facts
+      let r2 = null; try { r2 = await Products.fetchJSON(`${this.SAL}?${new URLSearchParams({ q, langs: 'fr', page_size: 80, fields: this.FIELDS })}`, 12000); } catch (e) { }
+      if (r2 && r2.status === 429) throw rate();
+      if (r2 && r2.ok && r2.data && Array.isArray(r2.data.hits)) list = r2.data.hits;
+      else throw new Error('net');
+    }
+    const out = [], seen = new Set();
+    for (const p of list) {
+      if (!p || !p.code || seen.has(p.code)) continue;
+      const brands = Store.norm(p.brands);
+      const where = Store.norm([].concat(p.stores_tags || [], p.stores || '').join(' '));
+      if (!/carrefour/.test(where + ' ' + brands)) continue;                 // uniquement vendu chez Carrefour
+      if (this.OTHER_BRANDS.test(brands) && !/carrefour/.test(brands)) continue;  // marques propres d’autres enseignes
+      seen.add(p.code);
+      out.push({ code: p.code, name: (p.product_name_fr || p.product_name || '').trim() || 'Produit ' + p.code, brand: (p.brands || '').split(',')[0].trim(), quantity: p.quantity || '', image: p.image_front_small_url || p.image_front_url || '' });
+    }
+    this.mem.set(key, out);
+    return out;
+  },
+  /** prix à Nice pour une liste de codes → Map(code → relevés) */
+  async nicePrices(codes) {
+    const map = new Map(); if (!codes.length) return map;
+    for (let i = 0; i < codes.length; i += 40) {
+      const items = await Store.prices({ product_code__in: codes.slice(i, i + 40).join(',') }, 100, { all: true });
+      for (const x of items) { if (!map.has(x.code)) map.set(x.code, []); map.get(x.code).push(x); }
+    }
+    return map;
+  },
+  localMatches(ws) {
+    const info = store.get('cpt_storeinfo', {}), hist = History.all(), out = new Map();
+    for (const [code, i] of Object.entries(info)) {
+      const h = hist.find(x => x.code === code) || {};
+      const name = i.name || h.name || '', brand = i.brand || h.brand || '';
+      if (this.match(`${name} ${brand} ${i.note || ''}`, ws)) out.set(code, { code, name: name || 'Produit ' + code, brand, img: h.img || '', price: i.price, aisle: i.aisle, at: i.at || 0 });
+    }
+    for (const h of hist) if (!out.has(h.code) && this.match(`${h.name} ${h.brand}`, ws)) {
+      const i = info[h.code] || {}; out.set(h.code, { code: h.code, name: h.name, brand: h.brand, img: h.img, price: i.price, aisle: i.aisle, at: h.at });
+    }
+    return [...out.values()].sort((a, b) => b.at - a.at).slice(0, 12);
+  },
+
+  /* ---------- recherche ---------- */
+  async run(raw) {
+    const q = String(raw || '').trim().replace(/\s+/g, ' ');
+    const input = $('#q-input'); if (input && input.value.trim() !== q) input.value = q;
+    if (q.length < 2) { toast('Tapez au moins 2 lettres du nom du produit.', 'error'); return; }
+    if (/^\d{8,14}$/.test(q.replace(/\s/g, ''))) { this.close(); Products.show(q.replace(/\s/g, '')); return; }   // c’est un code-barres
+    const token = ++this.token, ws = this.words(q);
+    this.state = { q, ws, local: this.localMatches(ws), nice: null, niceErr: '', off: null, offErr: '', offPrices: null };
+    this.paint();
+    const btn = $('#q-go'); if (btn) btn.disabled = true;
+    const done = () => { if (token === this.token && btn) btn.disabled = false; };
+    const pNice = this.niceByName(q).then(x => { if (token === this.token) { this.state.nice = x; this.paint(); } })
+      .catch(() => { if (token === this.token) { this.state.nice = []; this.state.niceErr = 'Open Prices injoignable pour le moment.'; this.paint(); } });
+    const pOff = this.off(q).then(async list => {
+      if (token !== this.token) return;
+      this.state.off = list; this.paint();
+      try { const m = await this.nicePrices(list.map(p => p.code)); if (token === this.token) { this.state.offPrices = m; this.paint(); } }
+      catch (e) { if (token === this.token) { this.state.offPrices = new Map(); this.paint(); } }
+    }).catch(e => {
+      if (token !== this.token) return;
+      this.state.off = []; this.state.offPrices = new Map();
+      this.state.offErr = e && e.rate ? 'Trop de recherches en une minute (limite d’Open Food Facts : 10 par minute). Réessayez dans un instant.' : 'Catalogue injoignable pour le moment (connexion ?).';
+      this.paint();
+    });
+    await Promise.allSettled([pNice, pOff]); done();
+  },
+  paint() {
+    const box = $('#q-results'), S = this.state; if (!box || !S) return;
+    box.hidden = false;
+    const scope = Store.scope, inScope = x => scope !== 'tnl' || x.tnl;
+    const loading = `<div class="skeleton" style="height:58px;border-radius:14px"></div><div class="skeleton" style="height:58px;border-radius:14px;opacity:.6"></div>`;
+    const date = d => d ? new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : '';
+    const thumb = (img, ic = 'Package') => img ? `<img class="item-thumb" src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.outerHTML='<span class=&quot;item-thumb ph&quot;></span>'">` : `<span class="item-thumb ph">${icon(ic)}</span>`;
+    const priceChip = x => `<span class="q-price"><b>${euro(x.price)}</b><small>${esc(x.tnl ? 'Nice TNL' : 'Nice')}${x.date ? ' · ' + date(x.date) : ''}${x.per === 'KILOGRAM' ? ' · /kg' : ''}</small></span>`;
+    let html = '';
+
+    // 1. fiches magasin
+    if (S.local.length) {
+      html += `<div class="q-sec"><h5>${icon('Store', 'sm')}Mes fiches magasin<span>${S.local.length}</span></h5><div class="list">` +
+        S.local.map(x => `<div class="item click" data-q-open="${esc(x.code)}">${thumb(x.img, Products.isLocal(x.code) ? 'Tag' : 'Package')}<div class="item-main"><div class="item-title">${esc(x.name)}</div><div class="item-sub">${Products.isLocal(x.code) ? 'Sans code-barres' : `<span class="mono">${esc(x.code)}</span>`}${x.brand ? ' · ' + esc(x.brand) : ''}${x.aisle ? ' · rayon ' + esc(x.aisle) : ''}</div></div>${x.price != null ? `<span class="q-price"><b>${euro(x.price)}</b><small>fiche magasin</small></span>` : ''}</div>`).join('') + `</div></div>`;
+    }
+
+    // 2. prix relevés dans les Carrefour de Nice
+    const nice = S.nice ? S.nice.filter(inScope) : null;
+    html += `<div class="q-sec"><h5>${icon('MapPin', 'sm')}Prix relevés chez ${Store.label()}${nice ? `<span>${nice.length}</span>` : ''}</h5>`;
+    if (!nice) html += `<div class="list">${loading}</div>`;
+    else if (!nice.length) html += `<p class="q-none">${S.niceErr ? esc(S.niceErr) : `Aucun prix relevé chez ${Store.label()} pour « ${esc(S.q)} ».`}</p>`;
+    else html += `<div class="list">` + nice.slice(0, 12).map(x => {
+      const vrac = x.type === 'CATEGORY' || !x.code;
+      return `<div class="item ${vrac ? '' : 'click'}" ${vrac ? '' : `data-q-open="${esc(x.code)}"`}>${thumb(x.image, vrac ? 'Leaf' : 'Package')}<div class="item-main"><div class="item-title">${esc(x.label)}</div><div class="item-sub">${esc(x.store)}${x.promo ? ' · promo' : ''}</div></div>${priceChip(x)}</div>`;
+    }).join('') + `</div>`;
+    html += `</div>`;
+
+    // 3. catalogue Carrefour
+    html += `<div class="q-sec"><h5>${icon('ShoppingCart', 'sm')}Produits vendus chez Carrefour${S.off ? `<span>${S.off.length}</span>` : ''}</h5>`;
+    if (!S.off) html += `<div class="list">${loading}</div>`;
+    else if (S.offErr) html += `<p class="q-none">${esc(S.offErr)}</p>`;
+    else {
+      let rows = S.off.map(p => {
+        const pr = S.offPrices ? (S.offPrices.get(p.code) || []).filter(inScope) : null;
+        return { p, pr, best: pr && pr.length ? pr.slice().sort((a, b) => (b.tnl - a.tnl) || String(b.date || '').localeCompare(String(a.date || '')))[0] : null };
+      });
+      rows.sort((a, b) => (!!b.best - !!a.best));
+      if (this.priced && S.offPrices) rows = rows.filter(r => r.best);
+      if (!rows.length) html += `<p class="q-none">${this.priced ? `Aucun de ces produits n’a de prix relevé chez ${Store.label()}.` : `Aucun produit Carrefour trouvé pour « ${esc(S.q)} ». Essayez un autre mot (marque, variété…).`}</p>`;
+      else html += `<div class="list">` + rows.slice(0, 24).map(({ p, pr, best }) => `<div class="item click" data-q-open="${esc(p.code)}">${thumb(p.image)}<div class="item-main"><div class="item-title">${esc(p.name)}</div><div class="item-sub">${esc([p.brand, p.quantity].filter(Boolean).join(' · '))}${p.brand || p.quantity ? ' · ' : ''}<span class="mono">${esc(p.code)}</span></div></div>${best ? priceChip(best) : `<span class="q-price none"><small>${pr ? 'pas de prix à Nice' : '…'}</small></span>`}</div>`).join('') + `</div>`;
+    }
+    html += `</div>`;
+
+    html += `<div class="q-foot"><button class="btn btn-soft btn-sm" id="q-create">${icon('Plus', 'sm')}Créer une fiche « ${esc(S.q.slice(0, 40))} »</button>
+      <a class="btn btn-ghost btn-sm" href="https://www.carrefour.fr/s?q=${encodeURIComponent(S.q)}" target="_blank" rel="noopener">${icon('ExternalLink', 'sm')}Chercher sur carrefour.fr</a>
+      <a class="btn btn-ghost btn-sm" href="${Store.TNL_URL}" target="_blank" rel="noopener">${icon('Store', 'sm')}Drive Nice TNL</a>
+      <button class="btn btn-ghost btn-sm" id="q-close" style="margin-left:auto">${icon('X', 'sm')}Fermer</button></div>
+      <p class="src-note">${icon('Info', 'sm')}<span>Résultats limités à Carrefour dans la ville de Nice : aucune autre enseigne ni autre ville. Prix Open Prices relevés par des clients, à vérifier en rayon. Sur carrefour.fr, choisissez le magasin Nice TNL pour voir ses prix exacts.</span></p>`;
+    box.innerHTML = html;
+  },
+  close() { this.token++; this.state = null; const box = $('#q-results'); box.hidden = true; box.innerHTML = ''; const b = $('#q-go'); if (b) b.disabled = false; },
+  bind() {
+    const input = $('#q-input');
+    $('#q-go').onclick = () => this.run(input.value);
+    input.onkeydown = e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); this.run(input.value); } };
+    $$('#q-scope [data-s]').forEach(b => { b.classList.toggle('on', b.dataset.s === Store.scope); b.onclick = () => Store.setScope(b.dataset.s); });
+    const pr = $('#q-priced'); pr.checked = this.priced;
+    pr.onchange = () => { this.priced = pr.checked; store.set('cpt_q_priced', this.priced); this.paint(); };
+    $('#q-results').onclick = e => {
+      if (e.target.closest('#q-close')) return this.close();
+      if (e.target.closest('#q-create')) { const id = Products.createLocal(this.state ? this.state.q : input.value); setTimeout(() => { const n = $('#si-price'); n && n.focus(); }, 500); return id; }
+      const it = e.target.closest('[data-q-open]');
+      if (it) { Products.show(it.dataset.qOpen); if (window.innerWidth >= 1080) $('#result-card').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     };
   }
 };
@@ -1963,46 +2401,75 @@ const Promo = {
 };
 
 /* =====================================================================
-   PAGE 4 — DISCUSSION ENTRE COLLÈGUES
-   Messages chiffrés de bout en bout (AES-GCM 256, clé dérivée du mot de passe
-   du salon par PBKDF2). Transport : relais MQTT publics (plusieurs à la fois
-   pour la fiabilité, doublons éliminés). Historique gardé sur chaque appareil
-   et resynchronisé entre collègues connectés.
+   PAGE 4 — DISCUSSION ENTRE COLLÈGUES (v2)
+   • Le nom du salon suffit : même nom = même salon (majuscules et accents ignorés),
+     code secret facultatif.
+   • Messages chiffrés de bout en bout (AES-GCM 256, clé dérivée du nom du salon
+     et du code secret par PBKDF2) puis envoyés à trois relais MQTT publics en même
+     temps (EMQX, HiveMQ, Eclipse) : il suffit qu’un seul passe.
+   • Les messages restent 14 jours sur les relais (messages « retenus ») : un
+     collègue qui arrive plus tard les reçoit même si personne n’est connecté.
+   • Chaque onglet a son identifiant : deux onglets du même navigateur se parlent.
    ===================================================================== */
 const Chat = {
-  DEFAULT_BROKERS: ['wss://broker.emqx.io:8084/mqtt', 'wss://broker.hivemq.com:8884/mqtt'],
+  RELAYS: [
+    { name: 'EMQX', url: 'wss://broker.emqx.io:8084/mqtt' },
+    { name: 'HiveMQ', url: 'wss://broker.hivemq.com:8884/mqtt' },
+    { name: 'Eclipse', url: 'wss://mqtt.eclipseprojects.io:443/mqtt' }
+  ],
+  DEFAULT_ROOM: 'Carrefour Nice TNL',
+  KEEP_DAYS: 14, ONLINE_MS: 75000, BEAT_MS: 30000,
   COLORS: ['#3B7BFF', '#FF4D63', '#2BD49A', '#FFB020', '#A06BFF', '#FF7A45', '#14B8C6', '#E84393'],
   EMOJIS: ['👍', '🙏', '😂', '✅', '❌', '⚠️', '🔥', '🎉', '📦', '🛒', '🏷️', '🧾', '☕', '👀', '❤️', '💪'],
   REACTS: ['👍', '❤️', '😂', '✅', '👀'],
-  me: null, rooms: [], keys: {}, activeId: null,
-  msgs: {}, members: {}, typing: {}, unread: {},
-  clients: [], seen: new Set(), seenQ: [], queue: [],
+  me: null, tab: uid().slice(0, 12), rooms: [], keys: {}, activeId: null,
+  msgs: {}, members: {}, typing: {}, unread: {}, pendingReacts: {}, deletedIds: {},
+  clients: [], seen: new Set(), seenQ: [], queue: [], cleared: new Set(),
   replyTo: null, lastTyping: 0, heartbeat: null, started: false, pendingShare: null,
 
   /* ---------- utilitaires ---------- */
   hex: buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join(''),
-  b64u: s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''),
-  unb64u: s => decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/')))),
   initials: n => (String(n || '?').trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2) || '?').toUpperCase(),
-  brokers() { const c = store.get('cpt_brokers', null); return Array.isArray(c) && c.length ? c : this.DEFAULT_BROKERS; },
+  normRoom: s => Store.norm(s).replace(/[^a-z0-9]+/g, ' ').trim(),
+  normSecret: s => Store.norm(s).trim(),
+  slug(s) { return this.normRoom(s).replace(/ /g, '-').slice(0, 24); },
+  ss: {
+    get(k, d) { try { const v = sessionStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
+  },
+  device() {
+    let d = store.get('cpt_device', null);
+    if (!d) { d = uid().slice(0, 10); store.set('cpt_device', d); }
+    return d;
+  },
+  brokers() {
+    const c = store.get('cpt_brokers', null);
+    if (!Array.isArray(c) || !c.length) return this.RELAYS;
+    return c.map(url => this.RELAYS.find(r => r.url === url) || { name: (url.match(/^wss?:\/\/([^/:]+)/) || [, url])[1].replace(/^(broker|mqtt)\./, ''), url });
+  },
   room(id = this.activeId) { return this.rooms.find(r => r.id === id) || null; },
+  setMe(name, color) {
+    name = String(name || '').trim().slice(0, 24);
+    this.me = { id: this.device() + '-' + (this.slug(name) || 'invite'), name, color: color || (this.me && this.me.color) || this.COLORS[0] };
+  },
 
   /* ---------- chiffrement ---------- */
-  async derive(name, pass) {
-    if (!window.crypto || !crypto.subtle) throw new Error('Le chiffrement nécessite une page sécurisée (https:// ou fichier ouvert sur l’appareil).');
-    const norm = name.trim().toLowerCase().normalize('NFKC'), enc = new TextEncoder();
-    const base = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
-    const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: enc.encode('cpt-chat-v1|' + norm), iterations: 210000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
-    const h = this.hex(await crypto.subtle.digest('SHA-256', enc.encode('cpt-topic-v1|' + norm + '|' + pass)));
-    return { key, id: h.slice(0, 16), topic: 'cptools/v1/' + h.slice(0, 40) };
+  async derive(roomName, secret = '') {
+    if (!window.crypto || !crypto.subtle) throw new Error('Ce navigateur bloque le chiffrement ici. Ouvrez le fichier avec Chrome, Edge, Firefox ou Safari (pas dans un simple aperçu de fichier).');
+    const norm = this.normRoom(roomName), sec = this.normSecret(secret), enc = new TextEncoder();
+    if (norm.length < 2) throw new Error('Nom de salon trop court.');
+    const base = await crypto.subtle.importKey('raw', enc.encode('cpt-room|' + norm + '|' + sec), 'PBKDF2', false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: enc.encode('cpt-chat-v2'), iterations: 120000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+    const h = this.hex(await crypto.subtle.digest('SHA-256', enc.encode('cpt-topic-v2|' + norm + '|' + sec)));
+    return { key, id: h.slice(32, 48), base: 'cptools/v2/' + h.slice(0, 32) };
   },
   async seal(roomId, obj) {
     const iv = crypto.getRandomValues(new Uint8Array(12));
     const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, this.keys[roomId], new TextEncoder().encode(JSON.stringify(obj))));
-    const out = new Uint8Array(13 + ct.length); out[0] = 1; out.set(iv, 1); out.set(ct, 13); return out;
+    const out = new Uint8Array(13 + ct.length); out[0] = 2; out.set(iv, 1); out.set(ct, 13); return out;
   },
   async open(roomId, bytes) {
-    if (!bytes || bytes[0] !== 1 || bytes.length < 30) return null;
+    if (!bytes || bytes[0] !== 2 || bytes.length < 30 || !this.keys[roomId]) return null;
     try { const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bytes.slice(1, 13) }, this.keys[roomId], bytes.slice(13)); return JSON.parse(new TextDecoder().decode(pt)); }
     catch (e) { return null; }
   },
@@ -2015,136 +2482,217 @@ const Chat = {
       let list = this.load(roomId).filter(m => m.k !== 'sys' || m.keep).slice(-400);
       for (let tries = 0; tries < 6; tries++) {
         if (store.set('cpt_chat_' + roomId, list)) return;
-        // stockage plein : on retire les photos les plus anciennes
-        const imgs = list.filter(m => m.data && m.data.img);
+        const imgs = list.filter(m => m.data && m.data.img);           // stockage plein : on retire les photos anciennes
         if (!imgs.length) { list = list.slice(Math.floor(list.length / 3)); continue; }
         imgs.slice(0, Math.ceil(imgs.length / 2)).forEach(m => { m.data = { ...m.data, img: null, gone: true }; });
       }
     }, 300);
   },
-  saveMeta() { store.set('cpt_me', this.me); store.set('cpt_rooms', this.rooms.map(r => ({ id: r.id, name: r.name, pass: r.pass, topic: r.topic }))); store.set('cpt_room_active', this.activeId); store.set('cpt_unread', this.unread); },
+  saveMeta() {
+    if (this.me) { store.set('cpt_me', this.me); this.ss.set('cpt_me_tab', this.me); }
+    store.set('cpt_rooms', this.rooms.map(r => ({ id: r.id, name: r.name, secret: r.secret || '', base: r.base })));
+    store.set('cpt_room_active', this.activeId); store.set('cpt_unread', this.unread);
+  },
 
-  /* ---------- transport MQTT (plusieurs relais) ---------- */
+  /* ---------- transport MQTT (trois relais en parallèle) ---------- */
   async connect() {
-    if (this.clients.length) return;
+    if (this.clients.length || !this.me) return;
     this.setConn('wait', 'Connexion…');
     try { await loadScript(CDN.mqtt, () => !!window.mqtt); }
-    catch (e) { this.setConn('off', 'Messagerie indisponible (connexion requise)'); return; }
-    const urls = this.brokers();
-    for (const url of urls) {
-      const willRoom = this.rooms[0];
-      const opts = { clientId: 'cpt_' + this.me.id.slice(0, 10) + '_' + Math.random().toString(36).slice(2, 7), keepalive: 30, reconnectPeriod: 4000, connectTimeout: 12000, clean: true, protocolVersion: 4 };
-      if (willRoom) { try { opts.will = { topic: willRoom.topic, payload: await this.seal(willRoom.id, this.env('p', { state: 'off' })), qos: 0, retain: false }; } catch (e) { } }
-      let c;
-      try { c = mqtt.connect(url, opts); } catch (e) { console.warn('MQTT', url, e); continue; }
-      const entry = { url, c, up: false };
+    catch (e) { this.setConn('off', 'Messagerie indisponible'); this.banner('lib'); return; }
+    if (this.clients.length) return;
+    const first = this.rooms[0];
+    for (const relay of this.brokers()) {
+      const opts = { clientId: 'cpt_' + uid().slice(0, 16), keepalive: 30, reconnectPeriod: 5000, connectTimeout: 12000, clean: true, protocolVersion: 4, resubscribe: true };
+      if (first) opts.will = { topic: this.presTopic(first), payload: '', qos: 0, retain: true };   // efface notre présence si la connexion coupe
+      const entry = { ...relay, c: null, up: false, state: 'wait', err: '' };
       this.clients.push(entry);
-      c.on('connect', () => { entry.up = true; this.onUp(entry); });
-      c.on('reconnect', () => { if (!this.anyUp()) this.setConn('wait', 'Reconnexion…'); });
-      c.on('close', () => { entry.up = false; this.refreshConn(); });
-      c.on('offline', () => { entry.up = false; this.refreshConn(); });
-      c.on('error', e => console.warn('MQTT', url, e && e.message));
-      c.on('message', (topic, payload) => this.onRaw(topic, payload));
+      try { entry.c = mqtt.connect(relay.url, opts); } catch (e) { entry.state = 'err'; entry.err = e.message; continue; }
+      const c = entry.c;
+      c.on('connect', () => { entry.up = true; entry.state = 'on'; entry.err = ''; entry.failed = false; this.onUp(entry); this.renderRelays(); });
+      c.on('reconnect', () => { if (!entry.up) { entry.state = entry.err || entry.failed ? 'err' : 'wait'; this.renderRelays(); } if (!this.anyUp()) this.setConn('wait', 'Reconnexion…'); });
+      const down = () => { entry.up = false; entry.state = entry.err || entry.failed ? 'err' : 'wait'; this.refreshConn(); };
+      c.on('close', down); c.on('offline', down);
+      c.on('error', e => { entry.err = (e && e.message) || 'erreur'; entry.state = 'err'; this.renderRelays(); });
+      c.on('message', (topic, payload, packet) => this.onRaw(topic, payload, packet));
     }
-    setTimeout(() => this.refreshConn(), 13000);
+    this.renderRelays();
+    clearTimeout(this._diag);
+    this._diag = setTimeout(() => {
+      this.clients.forEach(e => { if (!e.up) { e.state = 'err'; e.failed = true; } });
+      this.refreshConn();
+      if (!this.anyUp()) this.banner('none');
+    }, 15000);
   },
   disconnect() {
-    for (const e of this.clients) { try { e.c.end(true); } catch (x) { } }
-    this.clients = []; clearInterval(this.heartbeat); this.heartbeat = null;
+    for (const e of this.clients) { try { e.c && e.c.end(true); } catch (x) { } }
+    this.clients = []; clearInterval(this.heartbeat); this.heartbeat = null; clearTimeout(this._diag);
   },
+  reconnect() { this.banner(null); this.disconnect(); this.connect(); },
   anyUp() { return this.clients.some(e => e.up); },
   refreshConn() {
     const n = this.clients.filter(e => e.up).length;
-    if (n) this.setConn('on', n > 1 ? `En ligne · ${n} relais` : 'En ligne');
-    else if (this.clients.length) this.setConn(navigator.onLine === false ? 'off' : 'wait', navigator.onLine === false ? 'Hors ligne' : 'Connexion…');
+    if (n) { this.setConn('on', n > 1 ? `En ligne · ${n} relais` : 'En ligne'); this.banner(null); }
+    else if (navigator.onLine === false) this.setConn('off', 'Hors ligne');
+    else if (this.clients.length && this.clients.every(e => e.state === 'err')) this.setConn('off', 'Aucun relais joignable');
+    else if (this.clients.length) this.setConn('wait', 'Connexion…');
+    this.renderRelays();
   },
   setConn(state, text) {
-    const el = $('#conn'); if (!el) return;
-    el.className = 'conn ' + state; el.querySelector('span').textContent = text;
+    const el = $('#conn'); if (el) { el.className = 'conn ' + state; el.querySelector('span').textContent = text; }
+    const sub = $('#chat-sub'); if (sub && state !== 'on') sub.textContent = text;
+    if (state === 'on') this.renderMembers();
+  },
+  renderRelays() {
+    const box = $('#relays'); if (!box) return;
+    const list = this.clients.length ? this.clients : this.brokers().map(r => ({ ...r, state: 'wait' }));
+    const tip = { on: 'connecté', wait: 'connexion…', err: 'injoignable' };
+    box.innerHTML = list.map(e => `<span class="relay ${e.state}" title="${esc(e.url)} : ${tip[e.state] || ''}${e.err ? ' (' + esc(e.err) + ')' : ''}"><i></i>${esc(e.name)}</span>`).join('') +
+      (this.anyUp() ? '' : `<button class="relay-retry" data-retry>${icon('RefreshCw', 'sm')}Réessayer</button>`);
+  },
+  banner(kind) {
+    const el = $('#chat-banner'); if (!el) return;
+    if (!kind) { el.hidden = true; el.innerHTML = ''; return; }
+    el.innerHTML = kind === 'lib'
+      ? `${icon('WifiOff')}<div><b>Messagerie impossible à charger</b><span>Une connexion Internet est nécessaire pour la discussion.</span></div><button class="btn btn-soft btn-sm" data-retry>${icon('RefreshCw', 'sm')}Réessayer</button>`
+      : `${icon('WifiOff')}<div><b>Aucun relais de messagerie joignable</b><span>Le Wi-Fi du magasin bloque peut-être la discussion. Passez en 4G/5G (ou un autre réseau), puis touchez Réessayer. Vos messages partiront dès que la connexion revient.</span></div><button class="btn btn-soft btn-sm" data-retry>${icon('RefreshCw', 'sm')}Réessayer</button>`;
+    el.hidden = false;
   },
   onUp(entry) {
-    entry.c.subscribe(this.rooms.map(r => r.topic), { qos: 1 }, err => {
-      if (err) { console.warn(err); return; }
-      this.refreshConn();
-      for (const r of this.rooms) {
-        this.publish(r.id, this.env('p', { state: 'on' }), 0, entry);
-        const since = Math.max(0, ...this.load(r.id).filter(m => m.k !== 'sys').map(m => m.ts));
-        this.publish(r.id, this.env('q', { rid: uid(), since }), 0, entry);
-      }
+    this.banner(null);
+    const topics = this.rooms.map(r => r.base + '/#');
+    if (topics.length) entry.c.subscribe(topics, { qos: 1 }, err => {
+      if (err) { console.warn('MQTT subscribe', err); return; }
+      for (const r of this.rooms) this.hello(r, entry);
       this.flush();
     });
-    if (!this.heartbeat) this.heartbeat = setInterval(() => { for (const r of this.rooms) this.publish(r.id, this.env('p', { state: 'on' }), 0); this.renderMembers(); }, 25000);
+    this.refreshConn();
+    if (!this.heartbeat) this.heartbeat = setInterval(() => { for (const r of this.rooms) this.presence(r, 'on'); this.renderMembers(); this.renderTyping(); }, this.BEAT_MS);
   },
-  env(k, extra) { return { k, e: uid(), ts: Date.now(), u: { id: this.me.id, name: this.me.name, color: this.me.color }, ...extra }; },
-  async publish(roomId, env, qos = 1, only) {
+  hello(r, only) {
+    this.presence(r, 'on', only);
+    const since = Math.max(0, ...this.load(r.id).filter(m => m.k !== 'sys').map(m => m.ts));
+    this.pub(r.id, 'e', this.env('q', { rid: uid(), since }), { qos: 0, only });
+  },
+  presSub() { return `p/${this.me.id}~${this.tab}`; },
+  presTopic(r) { return `${r.base}/${this.presSub()}`; },
+  presence(r, state, only) { return this.pub(r.id, this.presSub(), state === 'off' ? null : this.env('p', { state }), { qos: 0, retain: true, only }); },
+  env(k, extra) { return { k, e: uid(), ts: Date.now(), tab: this.tab, u: { id: this.me.id, name: this.me.name, color: this.me.color }, ...extra }; },
+  /** publie sur <salon>/<sub> ; env = null publie un message vide (efface le message retenu) */
+  async pub(roomId, sub, env, o = {}) {
     const r = this.room(roomId); if (!r || !this.keys[roomId]) return false;
-    const targets = (only ? [only] : this.clients).filter(e => e.up);
+    const targets = (o.only ? [o.only] : this.clients).filter(e => e.up && e.c);
     if (!targets.length) return false;
-    let payload; try { payload = await this.seal(roomId, env); } catch (e) { return false; }
-    this.remember(env.e);
-    const res = await Promise.all(targets.map(t => new Promise(ok => { try { t.c.publish(r.topic, payload, { qos, retain: false }, err => ok(!err)); } catch (e) { ok(false); } })));
+    let payload;
+    try { payload = env === null ? '' : await this.seal(roomId, env); } catch (e) { return false; }
+    if (env) this.remember(env.e);
+    const topic = r.base + '/' + sub, qos = o.qos ?? 1;
+    const res = await Promise.all(targets.filter(t => t.up).map(t => new Promise(ok => {
+      const timer = setTimeout(() => ok(false), 10000);
+      try { t.c.publish(topic, payload, { qos, retain: !!o.retain }, err => { clearTimeout(timer); ok(!err); }); }
+      catch (e) { clearTimeout(timer); ok(false); }
+    })));
     return res.some(Boolean);
   },
-  remember(id) { if (this.seen.has(id)) return false; this.seen.add(id); this.seenQ.push(id); if (this.seenQ.length > 3000) this.seen.delete(this.seenQ.shift()); return true; },
-  async onRaw(topic, payload) {
-    const r = this.rooms.find(x => x.topic === topic); if (!r) return;
-    const env = await this.open(r.id, payload instanceof Uint8Array ? payload : new Uint8Array(payload));
-    if (!env || !env.k || !env.u) return;
-    const mine = env.u.id === this.me.id;
-    if (env.k === 'm' && mine) { this.markSent(r.id, env.m && env.m.id); return; }
-    if (!this.remember(env.e)) return;
-    if (mine) return;
-    this.onEnv(r.id, env);
+  clearRetained(r, sub) {
+    const key = r.base + '/' + sub; if (this.cleared.has(key)) return;
+    this.cleared.add(key); this.pub(r.id, sub, null, { qos: 0, retain: true });
   },
-  onEnv(roomId, env) {
-    const now = Date.now(), M = (this.members[roomId] = this.members[roomId] || {});
-    const prevOnline = M[env.u.id] && M[env.u.id].online && now - M[env.u.id].last < 70000;
-    M[env.u.id] = { ...(M[env.u.id] || {}), name: env.u.name, color: env.u.color, last: now, online: env.k === 'p' ? env.state === 'on' : true };
-    if (env.k === 'p') {
-      if (env.state === 'on' && !prevOnline && roomId === this.activeId && this.started) this.sys(roomId, `${env.u.name} est en ligne`, true);
-      this.renderMembers(); return;
+  remember(id) { if (!id || this.seen.has(id)) return false; this.seen.add(id); this.seenQ.push(id); if (this.seenQ.length > 4000) this.seen.delete(this.seenQ.shift()); return true; },
+  old(ts, days = this.KEEP_DAYS) { return !ts || Date.now() - ts > days * 864e5; },
+  async onRaw(topic, payload, packet) {
+    const r = this.rooms.find(x => topic.startsWith(x.base + '/')); if (!r) return;
+    const bytes = payload instanceof Uint8Array ? payload : new Uint8Array(payload || []);
+    if (!bytes.length) return;                                    // message retenu effacé
+    const env = await this.open(r.id, bytes);
+    if (!env || !env.k || !env.u || !env.u.id) return;
+    const sub = topic.slice(r.base.length + 1), retained = !!(packet && packet.retain);
+    if (env.tab === this.tab) { if (env.k === 'm' && env.m) this.markSent(r.id, env.m.id); return; }   // écho de cet onglet
+    if (!retained && !this.remember(env.e)) return;              // doublon reçu par un autre relais
+    const self = env.u.id === this.me.id;                        // même personne, autre onglet
+    switch (env.k) {
+      case 'm':
+        if (!env.m || !env.m.id) return;
+        if (retained && this.old(env.m.ts)) { this.clearRetained(r, sub); return; }
+        if (!retained && !self) this.seenOnline(r.id, env);
+        if (this.typing[env.u.id]) { delete this.typing[env.u.id]; this.renderTyping(); }
+        this.merge(r.id, [env.m], !retained);
+        return;
+      case 'd':
+        if (retained && this.old(env.ts)) { this.clearRetained(r, sub); return; }
+        this.applyDelete(r.id, env.id, env.u.id); return;
+      case 'r':
+        if (retained && this.old(env.ts)) { this.clearRetained(r, sub); return; }
+        this.applyReactList(r.id, env.id, env.u.id, Array.isArray(env.list) ? env.list : []); return;
+      case 'p': {
+        if (retained && this.old(env.ts, 1)) { this.clearRetained(r, sub); return; }
+        if (self) return;
+        this.onPresence(r.id, env, retained ? Math.min(env.ts || 0, Date.now()) : Date.now(), !retained); return;
+      }
+      case 't':
+        if (self) return;
+        this.typing[env.u.id] = { room: r.id, name: env.u.name, until: Date.now() + 4500 }; this.renderTyping();
+        this.seenOnline(r.id, env); return;
+      case 'q': this.answerSync(r.id, env); return;
+      case 's': {
+        const t = this['_sync' + env.rid]; if (t) { clearTimeout(t); delete this['_sync' + env.rid]; }
+        if (Array.isArray(env.msgs)) this.merge(r.id, env.msgs.filter(m => m && !this.old(m.ts)), false);
+      }
     }
-    if (env.k === 't') { this.typing[env.u.id] = { room: roomId, name: env.u.name, until: now + 4500 }; this.renderTyping(); return; }
-    if (env.k === 'm' && env.m) { delete this.typing[env.u.id]; this.renderTyping(); this.merge(roomId, [env.m], true); return; }
-    if (env.k === 'd') { const m = this.load(roomId).find(x => x.id === env.id); if (m && m.u.id === env.u.id) { m.deleted = true; m.text = ''; m.data = null; this.persist(roomId); this.renderIfActive(roomId); } return; }
-    if (env.k === 'r') { const m = this.load(roomId).find(x => x.id === env.id); if (m) { this.applyReact(m, env.emoji, env.u.id, env.on); this.persist(roomId); this.renderIfActive(roomId); } return; }
-    if (env.k === 'q') { this.answerSync(roomId, env); return; }
-    if (env.k === 's') { const t = this['_sync' + env.rid]; if (t) { clearTimeout(t); delete this['_sync' + env.rid]; } if (Array.isArray(env.msgs)) this.merge(roomId, env.msgs, false); }
+  },
+  member(roomId, u) {
+    const M = (this.members[roomId] = this.members[roomId] || {});
+    const p = (M[u.id] = M[u.id] || { name: u.name, color: u.color, last: 0, tabs: {} });
+    if (u.name) p.name = u.name; if (u.color) p.color = u.color;
+    return p;
+  },
+  isOn(p, now = Date.now()) { return Object.values(p.tabs || {}).some(t => t && now - t < this.ONLINE_MS); },
+  seenOnline(roomId, env) { const p = this.member(roomId, env.u), was = this.isOn(p); p.tabs[env.tab || 'x'] = Date.now(); p.last = Date.now(); if (!was) this.renderMembers(); },
+  onPresence(roomId, env, ts, live) {
+    const p = this.member(roomId, env.u), was = this.isOn(p);
+    p.tabs[env.tab || 'x'] = env.state === 'on' ? ts : 0;
+    p.last = Math.max(p.last, ts);
+    if (!was && this.isOn(p) && live && roomId === this.activeId && this.started) this.sys(roomId, `${env.u.name} est en ligne`, true);
     this.renderMembers();
   },
   answerSync(roomId, env) {
-    const list = this.load(roomId).filter(m => m.k !== 'sys' && m.status !== 'pending' && m.status !== 'failed' && m.ts > (env.since || 0)).slice(-200);
+    const list = this.load(roomId).filter(m => m.k !== 'sys' && m.status !== 'pending' && m.status !== 'failed' && m.ts > (env.since || 0) && !this.old(m.ts)).slice(-150);
     if (!list.length) return;
     this['_sync' + env.rid] = setTimeout(async () => {
       delete this['_sync' + env.rid];
       let chunk = [], size = 0;
-      const send = async () => { if (chunk.length) await this.publish(roomId, this.env('s', { rid: env.rid, msgs: chunk }), 1); chunk = []; size = 0; };
-      for (const m of list) { const s = JSON.stringify(m).length; if (size + s > 160000) await send(); chunk.push(this.strip(m)); size += s; }
+      const send = async () => { if (chunk.length) await this.pub(roomId, 'e', this.env('s', { rid: env.rid, msgs: chunk }), { qos: 1 }); chunk = []; size = 0; };
+      for (const m of list) { const s = JSON.stringify(m).length; if (size + s > 90000) await send(); chunk.push(this.strip(m)); size += s; }
       await send();
-    }, 250 + Math.random() * 1200);
+    }, 300 + Math.random() * 1500);
   },
   strip(m) { const { status, ...rest } = m; return rest; },
   merge(roomId, incoming, live) {
-    const list = this.load(roomId); let added = 0, mention = null, last = null;
+    const list = this.load(roomId), dead = this.deletedIds[roomId] || new Set();
+    let added = 0, changed = false, mention = null, last = null, fromOthers = 0;
     for (const m of incoming) {
       if (!m || !m.id || !m.u) continue;
       const ex = list.find(x => x.id === m.id);
       if (ex) {
-        if (m.deleted && !ex.deleted) { ex.deleted = true; ex.text = ''; ex.data = null; }
-        if (m.reacts) for (const [e, ids] of Object.entries(m.reacts)) for (const id of ids) this.applyReact(ex, e, id, true);
+        if (ex.status === 'pending' || ex.status === 'failed') { ex.status = 'sent'; changed = true; }
+        if (m.deleted && !ex.deleted) { ex.deleted = true; ex.text = ''; ex.data = null; changed = true; }
+        if (m.reacts) for (const [e, ids] of Object.entries(m.reacts)) for (const id of ids) { if (!((ex.reacts || {})[e] || []).includes(id)) { this.applyReact(ex, e, id, true); changed = true; } }
         continue;
       }
-      list.push({ ...m, status: 'sent' }); added++;
-      if (m.u.id !== this.me.id) { last = m; if (this.mentionsMe(m.text)) mention = m; }
-      const M = (this.members[roomId] = this.members[roomId] || {});
-      if (!M[m.u.id]) M[m.u.id] = { name: m.u.name, color: m.u.color, last: 0, online: false };
+      const item = { ...m, status: 'sent' };
+      if (dead.has(m.id)) { item.deleted = true; item.text = ''; item.data = null; }
+      const pend = (this.pendingReacts[roomId] || {})[m.id];
+      if (pend) { for (const [who, emojis] of Object.entries(pend)) this.setReacts(item, who, emojis); delete this.pendingReacts[roomId][m.id]; }
+      list.push(item); added++;
+      this.member(roomId, m.u);
+      if (m.u.id !== this.me.id && !item.deleted) { last = m; fromOthers++; if (this.mentionsMe(m.text)) mention = m; }
     }
-    if (!added && !incoming.some(m => m && m.deleted)) { this.renderIfActive(roomId); return; }
+    if (!added && !changed) return;
     list.sort((a, b) => a.ts - b.ts || (a.id < b.id ? -1 : 1));
     this.persist(roomId);
     const visible = roomId === this.activeId && nav.page === 'chat' && !document.hidden;
     if (last && !visible) {
-      this.unread[roomId] = (this.unread[roomId] || 0) + incoming.filter(m => m && m.u && m.u.id !== this.me.id && !m.deleted).length;
+      this.unread[roomId] = (this.unread[roomId] || 0) + fromOthers;
       this.saveMeta(); this.renderBadges();
       if (live) this.notify(roomId, mention || last);
     } else if (last && live) beep(880, 0.06);
@@ -2155,7 +2703,22 @@ const Chat = {
     on ? set.add(uidr) : set.delete(uidr);
     if (set.size) m.reacts[emoji] = [...set]; else delete m.reacts[emoji];
   },
-  mentionsMe(text) { if (!text || !this.me) return false; const n = this.me.name.toLowerCase(); return text.toLowerCase().includes('@' + n); },
+  setReacts(m, uidr, emojis) {
+    m.reacts = m.reacts || {};
+    for (const e of Object.keys(m.reacts)) this.applyReact(m, e, uidr, false);
+    for (const e of emojis.slice(0, 8)) if (typeof e === 'string' && e.length <= 8) this.applyReact(m, e, uidr, true);
+  },
+  applyReactList(roomId, msgId, uidr, emojis) {
+    const m = this.load(roomId).find(x => x.id === msgId);
+    if (!m) { ((this.pendingReacts[roomId] = this.pendingReacts[roomId] || {})[msgId] = this.pendingReacts[roomId][msgId] || {})[uidr] = emojis; return; }
+    this.setReacts(m, uidr, emojis); this.persist(roomId); this.renderIfActive(roomId);
+  },
+  applyDelete(roomId, id, uidr) {
+    (this.deletedIds[roomId] = this.deletedIds[roomId] || new Set()).add(id);
+    const m = this.load(roomId).find(x => x.id === id);
+    if (m && m.u.id === uidr && !m.deleted) { m.deleted = true; m.text = ''; m.data = null; this.persist(roomId); this.renderIfActive(roomId); }
+  },
+  mentionsMe(text) { if (!text || !this.me) return false; return Store.norm(text).includes('@' + Store.norm(this.me.name)); },
   markSent(roomId, id) { const m = this.load(roomId).find(x => x.id === id); if (m && m.status !== 'sent') { m.status = 'sent'; this.persist(roomId); this.renderIfActive(roomId); } },
 
   /* ---------- envoi ---------- */
@@ -2165,16 +2728,21 @@ const Chat = {
     if (this.replyTo) { m.reply = this.replyTo; this.setReply(null); }
     const list = this.load(room.id); list.push({ ...m, status: 'pending' }); this.persist(room.id);
     this.render(true);
-    const ok = await this.publish(room.id, this.env('m', { m }), 1);
-    if (!ok) this.queue.push({ roomId: room.id, id: m.id });
-    else setTimeout(() => { const x = list.find(y => y.id === m.id); if (x && x.status === 'pending') { x.status = 'sent'; this.persist(room.id); this.renderIfActive(room.id); } }, 4000);
+    await this.deliver(room.id, m);
+  },
+  async deliver(roomId, m) {
+    const ok = await this.pub(roomId, 'm/' + m.id, this.env('m', { m: this.strip(m) }), { qos: 1, retain: true });
+    const x = this.load(roomId).find(y => y.id === m.id); if (!x) return;
+    if (ok) { if (x.status !== 'sent') { x.status = 'sent'; this.persist(roomId); this.renderIfActive(roomId); } return; }
+    if (this.anyUp()) { x.status = 'failed'; this.persist(roomId); this.renderIfActive(roomId); }
+    if (!this.queue.some(q => q.id === m.id)) this.queue.push({ roomId, id: m.id });
   },
   async flush() {
     const q = this.queue.splice(0);
     for (const it of q) {
       const m = this.load(it.roomId).find(x => x.id === it.id); if (!m || m.status === 'sent') continue;
-      const ok = await this.publish(it.roomId, this.env('m', { m: this.strip(m) }), 1);
-      if (!ok) this.queue.push(it);
+      m.status = 'pending'; this.renderIfActive(it.roomId);
+      await this.deliver(it.roomId, m);
     }
   },
   sys(roomId, text, ephemeral) {
@@ -2193,13 +2761,13 @@ const Chat = {
     if (!file || !/^image\//.test(file.type)) return;
     try {
       const img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = URL.createObjectURL(file); });
-      let max = 1024, q = .72, url;
-      for (let t = 0; t < 4; t++) {
+      let max = 960, q = .7, url;
+      for (let t = 0; t < 6; t++) {
         const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
         const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
         c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
         url = c.toDataURL('image/jpeg', q);
-        if (url.length < 180000) break; max *= .8; q -= .06;
+        if (url.length < 110000) break; max *= .8; q = Math.max(.4, q - .07);
       }
       URL.revokeObjectURL(img.src);
       this.send('image', { data: { img: url } });
@@ -2208,7 +2776,7 @@ const Chat = {
   shareFromTools(payload) {
     if (!this.me || !this.room()) {
       this.pendingShare = payload; nav.go('chat');
-      toast('Rejoignez un salon : le partage sera envoyé juste après.', 'info'); return;
+      toast('Entrez dans un salon : le partage sera envoyé juste après.', 'info'); return;
     }
     const { type, ...data } = payload;
     nav.go('chat');
@@ -2216,18 +2784,19 @@ const Chat = {
   },
   typingPing() {
     const now = Date.now(); if (now - this.lastTyping < 2500 || !this.room()) return;
-    this.lastTyping = now; this.publish(this.activeId, this.env('t', {}), 0);
+    this.lastTyping = now; this.pub(this.activeId, 'e', this.env('t', {}), { qos: 0 });
   },
   react(id, emoji) {
     const m = this.load(this.activeId).find(x => x.id === id); if (!m) return;
     const on = !((m.reacts && m.reacts[emoji]) || []).includes(this.me.id);
     this.applyReact(m, emoji, this.me.id, on); this.persist(this.activeId); this.render();
-    this.publish(this.activeId, this.env('r', { id, emoji, on }), 1);
+    const mine = Object.entries(m.reacts || {}).filter(([, ids]) => ids.includes(this.me.id)).map(([e]) => e);
+    this.pub(this.activeId, `r/${id}~${this.me.id}`, mine.length ? this.env('r', { id, list: mine }) : this.env('r', { id, list: [] }), { qos: 1, retain: true });
   },
   del(id) {
     const m = this.load(this.activeId).find(x => x.id === id); if (!m || m.u.id !== this.me.id) return;
     m.deleted = true; m.text = ''; m.data = null; this.persist(this.activeId); this.render();
-    this.publish(this.activeId, this.env('d', { id }), 1);
+    this.pub(this.activeId, 'm/' + id, this.env('d', { id }), { qos: 1, retain: true });   // remplace le message sur les relais
   },
   setReply(m) {
     this.replyTo = m ? { id: m.id, name: m.u.name, text: this.preview(m) } : null;
@@ -2269,8 +2838,8 @@ const Chat = {
     const d = m.data || {};
     switch (m.k) {
       case 'text': return `<div class="b-text">${this.fmtText(m.text || '')}</div>`;
-      case 'image': return d.img ? `<img class="b-img" src="${d.img}" alt="Photo" data-zoom>` : `<div class="b-text" style="opacity:.7">📷 Photo retirée de cet appareil (stockage plein)</div>`;
-      case 'product': return `<div class="b-card" data-open-product="${esc(d.code)}">${d.image ? `<img src="${esc(d.image)}" alt="" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'ph',textContent:'📦'}))">` : `<span class="ph">📦</span>`}<div style="min-width:0"><b>${esc(d.name || 'Produit')}</b><small>${esc([d.brand, d.quantity].filter(Boolean).join(' · '))}</small><small class="mono">${esc(d.code || '')}${d.price != null ? ' · ' + euro(d.price) : ''}</small></div></div>`;
+      case 'image': return d.img && /^data:image\//.test(d.img) ? `<img class="b-img" src="${esc(d.img)}" alt="Photo" data-zoom>` : `<div class="b-text" style="opacity:.7">📷 Photo retirée de cet appareil (stockage plein)</div>`;
+      case 'product': return `<div class="b-card" data-open-product="${esc(d.code)}" data-name="${esc(d.name || '')}">${d.image ? `<img src="${esc(d.image)}" alt="" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'ph',textContent:'📦'}))">` : `<span class="ph">📦</span>`}<div style="min-width:0"><b>${esc(d.name || 'Produit')}</b><small>${esc([d.brand, d.quantity].filter(Boolean).join(' · '))}</small><small class="mono">${Products.isLocal(d.code) ? 'Sans code-barres' : esc(d.code || '')}${d.price != null ? ' · ' + euro(d.price) : ''}</small></div></div>`;
       case 'barcode': return `<div class="b-barcode" data-open-barcode="${esc(m.id)}"><svg data-bc="${esc(d.digits)}" data-fmt="${esc(d.format)}"></svg><small>${esc(d.name || '')}</small></div>`;
       case 'promo': return `<div class="b-card" style="cursor:default"><span class="ph" style="background:#FF4D63;color:#fff;font-weight:800;font-size:13px">−${Math.round(d.pct || 0)}%</span><div style="min-width:0"><b>${esc(d.name || 'Promo')}</b><small>${esc(d.desc || '')}</small><small><s>${euro(d.old)}</s> → <b>${euro(d.final)}</b>${d.units > 1 ? ` pour ${d.units}` : ''}</small></div></div>`;
       default: return '';
@@ -2280,8 +2849,9 @@ const Chat = {
     const box = $('#messages'); if (!box || !this.room()) return;
     const list = this.load(this.activeId);
     const near = forceBottom || box.scrollHeight - box.scrollTop - box.clientHeight < 140;
-    if (!list.length) {
-      box.innerHTML = `<div class="empty" style="margin:auto;max-width:360px"><div class="e-ic">${icon('MessagesSquare')}</div><b>Le salon est prêt</b>Envoyez le premier message, ou invitez vos collègues avec le bouton « Inviter ».</div>`;
+    if (!list.some(m => m.k !== 'sys')) {
+      box.innerHTML = list.map(m => `<div class="sys-line">${icon('Info', 'sm')}${esc(m.text)} · ${hhmm(m.ts)}</div>`).join('') +
+        `<div class="empty" style="margin:auto;max-width:380px"><div class="e-ic">${icon('MessagesSquare')}</div><b>Le salon est prêt</b>Envoyez le premier message. Vos collègues n’ont qu’à entrer le nom de salon « ${esc(this.room().name)} » pour vous rejoindre.</div>`;
       return;
     }
     let html = '', prev = null, lastDay = '';
@@ -2299,9 +2869,9 @@ const Chat = {
             ${!me && !cont ? `<div class="b-author" style="color:${esc(m.u.color || '#3B7BFF')}">${esc(m.u.name)}</div>` : ''}
             ${m.reply ? `<div class="b-reply" data-goto="${esc(m.reply.id)}"><b>${esc(m.reply.name)}</b>${esc(m.reply.text || '')}</div>` : ''}
             ${this.body(m)}
-            <div class="b-meta ${m.status === 'failed' ? 'fail' : ''}">${hhmm(m.ts)} ${status}</div>
+            <div class="b-meta ${m.status === 'failed' ? 'fail' : ''}" ${m.status === 'failed' ? 'title="Non envoyé : touchez pour réessayer"' : m.status === 'pending' ? 'title="En attente de connexion"' : ''}>${hhmm(m.ts)} ${status}</div>
           </div>
-          ${reacts.length ? `<div class="reacts">${reacts.map(([e, ids]) => `<button class="react ${ids.includes(this.me.id) ? 'mine' : ''}" data-react="${e}" title="${esc(ids.map(i => i === this.me.id ? 'Vous' : (this.members[this.activeId] || {})[i]?.name || '?').join(', '))}">${e} ${ids.length}</button>`).join('')}</div>` : ''}
+          ${reacts.length ? `<div class="reacts">${reacts.map(([e, ids]) => `<button class="react ${ids.includes(this.me.id) ? 'mine' : ''}" data-react="${esc(e)}" title="${esc(ids.map(i => i === this.me.id ? 'Vous' : (this.members[this.activeId] || {})[i]?.name || '?').join(', '))}">${esc(e)} ${ids.length}</button>`).join('')}</div>` : ''}
         </div>
         ${m.deleted ? '' : `<div class="msg-tools">${this.REACTS.map(e => `<button data-react="${e}" title="Réagir">${e}</button>`).join('')}<button data-reply title="Répondre">${icon('Reply', 'sm')}</button>${m.k === 'text' ? `<button data-copy title="Copier">${icon('Copy', 'sm')}</button>` : ''}${me ? `<button data-del title="Supprimer">${icon('Trash2', 'sm')}</button>` : ''}</div>`}
       </div>`;
@@ -2323,11 +2893,11 @@ const Chat = {
   renderMembers() {
     const box = $('#members'); if (!box || !this.room()) return;
     const now = Date.now(), M = this.members[this.activeId] || {};
-    const people = Object.entries(M).filter(([id]) => id !== this.me.id).map(([id, p]) => ({ id, ...p, on: p.online && now - p.last < 70000 }));
+    const people = Object.entries(M).filter(([id]) => id !== this.me.id).map(([id, p]) => ({ id, ...p, on: this.isOn(p, now) }));
     people.sort((a, b) => (b.on - a.on) || (b.last - a.last));
     const online = people.filter(p => p.on).length + 1;
     $('#members-count').textContent = `${online} en ligne`;
-    $('#chat-sub').textContent = online > 1 ? `${online} personnes en ligne` : 'Vous êtes seul en ligne pour l’instant';
+    if (this.anyUp()) $('#chat-sub').textContent = online > 1 ? `${online} personnes en ligne` : 'Vous êtes seul en ligne pour l’instant · les messages restent 14 jours';
     box.innerHTML = `<div class="member online"><div class="av sm" style="background:${esc(this.me.color)}">${esc(this.initials(this.me.name))}</div><span class="m-name">${esc(this.me.name)} <span class="faint" style="font-weight:500">(vous)</span></span></div>` +
       people.map(p => `<div class="member ${p.on ? 'online' : ''}"><div class="av sm" style="background:${esc(p.color || '#3B7BFF')}">${esc(this.initials(p.name))}</div><span class="m-name">${esc(p.name)}</span><span class="m-state">${p.on ? 'en ligne' : (p.last ? timeAgo(p.last) : '')}</span></div>`).join('');
   },
@@ -2340,7 +2910,7 @@ const Chat = {
   },
   renderRooms() {
     const box = $('#rooms'); if (!box) return;
-    box.innerHTML = this.rooms.map(r => `<button class="room-link ${r.id === this.activeId ? 'on' : ''}" data-room="${r.id}"><span class="av sm" style="background:linear-gradient(140deg,#4C88FF,#1A46C9)">${esc(this.initials(r.name))}</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.name)}</span>${this.unread[r.id] && r.id !== this.activeId ? `<span class="n">${this.unread[r.id]}</span>` : ''}</button>`).join('');
+    box.innerHTML = this.rooms.map(r => `<button class="room-link ${r.id === this.activeId ? 'on' : ''}" data-room="${r.id}"><span class="av sm" style="background:linear-gradient(140deg,#4C88FF,#1A46C9)">${esc(this.initials(r.name))}</span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.name)}${r.secret ? ' 🔒' : ''}</span>${this.unread[r.id] && r.id !== this.activeId ? `<span class="n">${this.unread[r.id]}</span>` : ''}</button>`).join('');
   },
   renderRoomHead() {
     const r = this.room(); if (!r) return;
@@ -2352,7 +2922,8 @@ const Chat = {
   showJoin(canGoBack) {
     $('#chat-join').hidden = false; $('#chat-shell').hidden = true; $('#page-chat').classList.remove('in-room');
     const head = $('#page-chat .page-head'); if (head) head.style.display = '';
-    if (this.me) $('#j-name').value = this.me.name;
+    if (this.me && !$('#j-name').value) $('#j-name').value = this.me.name;
+    if (!$('#j-room').value) $('#j-room').value = this.DEFAULT_ROOM;
     this.paintColors();
     let back = $('#j-back');
     if (canGoBack && !back) { back = document.createElement('button'); back.id = 'j-back'; back.className = 'btn btn-ghost'; back.innerHTML = `${icon('ChevronLeft')}Retour au salon`; back.onclick = () => this.showShell(); $('#j-go').after(back); }
@@ -2360,31 +2931,40 @@ const Chat = {
   },
   showShell() {
     $('#chat-join').hidden = true; $('#chat-shell').hidden = false; $('#page-chat').classList.add('in-room');
-    this.renderRoomHead(); this.renderRooms(); this.render(true); this.renderMembers(); this.markRead();
+    this.renderRoomHead(); this.renderRooms(); this.render(true); this.renderMembers(); this.renderRelays(); this.markRead();
+    if (!this.anyUp() && this.clients.length) this.refreshConn();
   },
   paintColors() {
     const cur = (this.me && this.me.color) || this._pick || this.COLORS[0];
-    $('#j-colors').innerHTML = this.COLORS.map(c => `<button style="background:${c}" data-c="${c}" class="${c === cur ? 'on' : ''}" aria-label="Couleur ${c}"></button>`).join('');
+    $('#j-colors').innerHTML = this.COLORS.map(c => `<button type="button" style="background:${c}" data-c="${c}" class="${c === cur ? 'on' : ''}" aria-label="Couleur ${c}"></button>`).join('');
   },
-  async join(name, roomName, pass, color) {
-    name = name.trim(); roomName = roomName.trim();
-    if (name.length < 2) return toast('Entrez votre prénom (2 lettres minimum).', 'error');
-    if (roomName.length < 3) return toast('Le nom du salon doit faire au moins 3 caractères.', 'error');
-    if (pass.length < 6) return toast('Mot de passe trop court : 6 caractères minimum.', 'error');
-    const btn = $('#j-go'); btn.disabled = true; btn.innerHTML = `${icon('LoaderCircle', 'spin')}Préparation du chiffrement…`;
+  async addRoom(roomName, secret) {
+    const d = await this.derive(roomName, secret);
+    let r = this.rooms.find(x => x.id === d.id);
+    if (!r) { r = { id: d.id, name: this.normRoom(roomName) === this.normRoom(this.DEFAULT_ROOM) ? this.DEFAULT_ROOM : roomName.trim().replace(/\s+/g, ' ').slice(0, 40), secret: this.normSecret(secret), base: d.base }; this.rooms.push(r); }
+    this.keys[d.id] = d.key;
+    return r;
+  },
+  async join(name, roomName, secret, color) {
+    name = String(name || '').trim(); roomName = String(roomName || '').trim() || this.DEFAULT_ROOM;
+    if (name.length < 2) { toast('Entrez votre prénom (2 lettres minimum).', 'error'); $('#j-name').focus(); return; }
+    if (this.normRoom(roomName).length < 2) { toast('Entrez le nom du salon.', 'error'); $('#j-room').focus(); return; }
+    const btn = $('#j-go'); btn.disabled = true; btn.innerHTML = `${icon('LoaderCircle', 'spin')}Ouverture du salon…`;
     try {
-      const d = await this.derive(roomName, pass);
-      this.me = { id: (this.me && this.me.id) || uid(), name: name.slice(0, 24), color: color || (this.me && this.me.color) || this.COLORS[0] };
-      if (!this.rooms.find(r => r.id === d.id)) this.rooms.push({ id: d.id, name: roomName, pass, topic: d.topic });
-      this.keys[d.id] = d.key; this.activeId = d.id; this.saveMeta();
-      const fresh = !this.load(d.id).length;
-      if (fresh) this.sys(d.id, 'Vous avez rejoint le salon. Les messages sont chiffrés de bout en bout.', false);
+      const prevId = this.me && this.me.id;
+      this.setMe(name, color);
+      if (prevId && prevId !== this.me.id && this.clients.length) for (const r of this.rooms) this.pub(r.id, `p/${prevId}~${this.tab}`, null, { qos: 0, retain: true });
+      const fresh = !this.rooms.some(r => this.normRoom(r.name) === this.normRoom(roomName) && this.normSecret(r.secret) === this.normSecret(secret));
+      const r = await this.addRoom(roomName, secret);
+      this.activeId = r.id; this.saveMeta();
+      if (fresh && !this.load(r.id).length) this.sys(r.id, `Vous êtes dans « ${r.name} ». Les collègues qui entrent ce même nom de salon vous rejoignent ici.`, false);
       this.showShell(); this.started = true;
-      if (this.clients.length) {        // nouvel abonnement sur les connexions existantes
-        for (const e of this.clients.filter(x => x.up)) e.c.subscribe(d.topic, { qos: 1 }, () => { this.publish(d.id, this.env('p', { state: 'on' }), 0, e); this.publish(d.id, this.env('q', { rid: uid(), since: 0 }), 0, e); });
+      if (this.clients.length) {
+        for (const e of this.clients.filter(x => x.up)) e.c.subscribe(r.base + '/#', { qos: 1 }, () => { for (const rr of this.rooms) this.hello(rr, e); });
+        this.refreshConn();
       } else this.connect();
-      if (this.pendingShare) { const p = this.pendingShare; this.pendingShare = null; setTimeout(() => this.shareFromTools(p), 600); }
-    } catch (e) { toast(e.message || 'Impossible de rejoindre le salon.', 'error', { timeout: 8000 }); }
+      if (this.pendingShare) { const p = this.pendingShare; this.pendingShare = null; setTimeout(() => this.shareFromTools(p), 700); }
+    } catch (e) { toast(e.message || 'Impossible d’ouvrir le salon.', 'error', { timeout: 9000 }); }
     finally { btn.disabled = false; btn.innerHTML = `${icon('ArrowRight')}Entrer dans le salon`; }
   },
   switchRoom(id) {
@@ -2395,8 +2975,8 @@ const Chat = {
   },
   leave(id) {
     const r = this.room(id); if (!r) return;
-    this.publish(id, this.env('p', { state: 'off' }), 0);
-    for (const e of this.clients.filter(x => x.up)) e.c.unsubscribe(r.topic);
+    this.presence(r, 'off');
+    for (const e of this.clients.filter(x => x.up)) e.c.unsubscribe(r.base + '/#');
     this.rooms = this.rooms.filter(x => x.id !== id); delete this.keys[id]; delete this.unread[id]; delete this.msgs[id];
     store.del('cpt_chat_' + id);
     this.activeId = this.rooms[0] ? this.rooms[0].id : null; this.saveMeta(); this.renderBadges();
@@ -2405,36 +2985,40 @@ const Chat = {
   },
   invite() {
     const r = this.room(); if (!r) return;
-    const code = 'CP1-' + this.b64u(JSON.stringify({ r: r.name, p: r.pass }));
-    const text = `Rejoins le salon « ${r.name} » sur Carrefour Pro : ouvre l’onglet Discussion et colle ce code d’invitation :\n${code}`;
-    modal.open(`<div class="modal-head"><div><h3>Inviter des collègues</h3><p class="muted" style="font-size:13.5px">Ce code contient le nom et le mot de passe du salon : ne l’envoyez qu’à vos collègues.</p></div><button class="icon-btn sm" data-close aria-label="Fermer">${icon('X')}</button></div>
-      <textarea class="input mono" rows="4" readonly style="font-size:13px">${esc(code)}</textarea>
-      <div class="btn-row" style="margin-top:14px"><button class="btn btn-primary" id="inv-copy">${icon('Copy')}Copier le message</button>${navigator.share ? `<button class="btn btn-ghost" id="inv-share">${icon('Share2')}Partager…</button>` : ''}</div>
-      <p class="faint" style="font-size:12.5px;margin-top:14px">Vos collègues peuvent aussi entrer directement le même nom de salon et le même mot de passe.</p>`, b => {
-      $('#inv-copy', b).onclick = async () => { try { await navigator.clipboard.writeText(text); toast('Invitation copiée.', 'success'); } catch (e) { $('textarea', b).select(); document.execCommand('copy'); toast('Invitation copiée.', 'success'); } };
-      const s = $('#inv-share', b); if (s) s.onclick = () => navigator.share({ title: 'Invitation Carrefour Pro', text }).catch(() => { });
+    const text = `Rejoins notre discussion sur Carrefour Pro :\nonglet « Discussion », entre ton prénom et le nom du salon : ${r.name}${r.secret ? `\nCode secret : ${r.secret}` : ''}`;
+    modal.open(`<div class="modal-head"><div><h3>Inviter des collègues</h3><p class="muted" style="font-size:13.5px">Il suffit qu’ils entrent ce nom de salon${r.secret ? ' et ce code secret' : ''} dans l’onglet Discussion.</p></div><button class="icon-btn sm" data-close aria-label="Fermer">${icon('X')}</button></div>
+      <div class="invite-box"><small>Nom du salon</small><b>${esc(r.name)}</b>${r.secret ? `<small style="margin-top:10px">Code secret</small><b class="mono">${esc(r.secret)}</b>` : ''}</div>
+      <p class="faint" style="font-size:12.5px;margin-top:10px">Majuscules, accents et espaces ne comptent pas : « ${esc(r.name.toUpperCase())} » mène au même salon.</p>
+      <div class="btn-row" style="margin-top:14px"><button class="btn btn-primary" id="inv-copy">${icon('Copy')}Copier l’invitation</button>${navigator.share ? `<button class="btn btn-ghost" id="inv-share">${icon('Share2')}Partager…</button>` : ''}</div>`, b => {
+      $('#inv-copy', b).onclick = async () => {
+        try { await navigator.clipboard.writeText(text); }
+        catch (e) { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+        toast('Invitation copiée : collez-la dans un SMS ou WhatsApp.', 'success');
+      };
+      const s = $('#inv-share', b); if (s) s.onclick = () => navigator.share({ title: 'Discussion Carrefour Pro', text }).catch(() => { });
     });
   },
   settings() {
-    const r = this.room(), list = this.brokers().join('\n');
+    const r = this.room(), list = this.brokers().map(x => x.url).join('\n');
     modal.open(`<div class="modal-head"><div><h3>Réglages de la discussion</h3><p class="muted" style="font-size:13.5px">Salon « ${esc(r ? r.name : '')} »</p></div><button class="icon-btn sm" data-close aria-label="Fermer">${icon('X')}</button></div>
       <div class="stack">
-        <div class="row"><label class="field"><span>Votre prénom</span><input class="input" id="st-name" maxlength="24" value="${esc(this.me.name)}"></label></div>
-        <div class="field"><span>Votre couleur</span><div class="color-pick" id="st-colors">${this.COLORS.map(c => `<button style="background:${c}" data-c="${c}" class="${c === this.me.color ? 'on' : ''}"></button>`).join('')}</div></div>
-        <label class="field"><span>Relais de messages (un par ligne)</span><textarea class="input mono" id="st-brokers" rows="3" style="font-size:12.5px">${esc(list)}</textarea><span class="input-hint">Tous les collègues doivent avoir au moins un relais en commun. Laissez vide pour revenir aux relais par défaut.</span></label>
+        <label class="field"><span>Votre prénom</span><input class="input" id="st-name" maxlength="24" value="${esc(this.me.name)}"></label>
+        <div class="field"><span>Votre couleur</span><div class="color-pick" id="st-colors">${this.COLORS.map(c => `<button type="button" style="background:${c}" data-c="${c}" class="${c === this.me.color ? 'on' : ''}"></button>`).join('')}</div></div>
+        <label class="field"><span>Relais de messages (un par ligne)</span><textarea class="input mono" id="st-brokers" rows="3" style="font-size:12.5px">${esc(list)}</textarea><span class="input-hint">Tous les collègues doivent avoir au moins un relais en commun. Laissez vide pour revenir aux trois relais par défaut.</span></label>
         <div class="btn-row"><button class="btn btn-primary" id="st-save">${icon('Check')}Enregistrer</button><button class="btn btn-ghost" id="st-clear">${icon('Trash2')}Effacer l’historique ici</button><button class="btn btn-ghost" id="st-leave" style="color:var(--red)">${icon('LogOut')}Quitter le salon</button></div>
-        <p class="faint" style="font-size:12px">Le mot de passe du salon est conservé sur cet appareil pour se reconnecter automatiquement.</p>
       </div>`, b => {
       let color = this.me.color;
       $('#st-colors', b).onclick = e => { const x = e.target.closest('[data-c]'); if (!x) return; color = x.dataset.c; $$('#st-colors button', b).forEach(y => y.classList.toggle('on', y === x)); };
       $('#st-save', b).onclick = () => {
-        const n = $('#st-name', b).value.trim(); if (n.length >= 2) this.me.name = n.slice(0, 24); this.me.color = color;
+        const n = $('#st-name', b).value.trim(), prevId = this.me.id;
+        if (n.length >= 2) this.setMe(n, color); else this.me.color = color;
+        if (prevId !== this.me.id) for (const rr of this.rooms) this.pub(rr.id, `p/${prevId}~${this.tab}`, null, { qos: 0, retain: true });
         const urls = $('#st-brokers', b).value.split(/\s+/).map(s => s.trim()).filter(s => /^wss?:\/\//.test(s));
-        const changed = JSON.stringify(urls.length ? urls : this.DEFAULT_BROKERS) !== JSON.stringify(this.brokers());
-        if (urls.length) store.set('cpt_brokers', urls); else store.del('cpt_brokers');
+        const changed = JSON.stringify(urls.length ? urls : this.RELAYS.map(x => x.url)) !== JSON.stringify(this.brokers().map(x => x.url));
+        if (urls.length && JSON.stringify(urls) !== JSON.stringify(this.RELAYS.map(x => x.url))) store.set('cpt_brokers', urls); else store.del('cpt_brokers');
         this.saveMeta(); modal.close(); this.render(); this.renderMembers();
-        if (changed) { this.disconnect(); this.connect(); }
-        for (const rr of this.rooms) this.publish(rr.id, this.env('p', { state: 'on' }), 0);
+        if (changed || prevId !== this.me.id) this.reconnect();
+        else for (const rr of this.rooms) this.presence(rr, 'on');
         toast('Réglages enregistrés.', 'success');
       };
       $('#st-clear', b).onclick = () => { if (!confirm('Effacer l’historique de ce salon sur cet appareil ?')) return; this.msgs[this.activeId] = []; store.del('cpt_chat_' + this.activeId); modal.close(); this.render(); };
@@ -2451,6 +3035,7 @@ const Chat = {
   },
   autosize() { const ta = $('#composer'); ta.style.height = 'auto'; ta.style.height = Math.min(160, ta.scrollHeight + 2) + 'px'; },
   onShow() {
+    if (this._loading) { this._loading.then(() => { if (nav.page === 'chat') this.onShow(); }); return; }   // salons en cours de chargement
     if (!this.me || !this.rooms.length) { this.showJoin(false); return; }
     if ($('#chat-join').hidden === false && $('#j-back') && !$('#j-back').hidden) return;
     this.showShell();
@@ -2458,34 +3043,54 @@ const Chat = {
   },
 
   /* ---------- initialisation ---------- */
-  async init() {
-    this.me = store.get('cpt_me', null);
-    this.rooms = store.get('cpt_rooms', []);
-    this.activeId = store.get('cpt_room_active', null);
-    this.unread = store.get('cpt_unread', {});
-    this._pick = (this.me && this.me.color) || this.COLORS[Math.floor(Math.random() * this.COLORS.length)];
-    this.bind(); this.renderBadges(); this.paintColors();
-    if (this.me && this.rooms.length) {
+  async migrateV1(oldMe) {
+    const v1 = store.get('cpt_rooms', []).filter(r => r && r.pass && !r.base);
+    for (const o of v1) {
       try {
-        for (const r of this.rooms) { const d = await this.derive(r.name, r.pass); this.keys[r.id] = d.key; }
-        if (!this.room(this.activeId)) this.activeId = this.rooms[0].id;
-        this.started = true; this.connect();
+        const r = await this.addRoom(o.name, o.pass);
+        const old = store.get('cpt_chat_' + o.id, null);
+        if (old && !store.get('cpt_chat_' + r.id, null)) {
+          if (oldMe) old.forEach(m => { if (m.u && m.u.id === oldMe.id) m.u = { ...m.u, id: this.me.id }; });
+          store.set('cpt_chat_' + r.id, old);
+        }
+        store.del('cpt_chat_' + o.id);
+        if (store.get('cpt_room_active', null) === o.id) this.activeId = r.id;
       } catch (e) { console.warn(e); }
     }
-    window.addEventListener('pagehide', () => { for (const r of this.rooms) this.publish(r.id, this.env('p', { state: 'off' }), 0); });
-    window.addEventListener('online', () => this.refreshConn());
+  },
+  async init() {
+    const saved = this.ss.get('cpt_me_tab', null) || store.get('cpt_me', null);
+    this.activeId = store.get('cpt_room_active', null);
+    this.unread = store.get('cpt_unread', {});
+    this._pick = (saved && saved.color) || this.COLORS[Math.floor(Math.random() * this.COLORS.length)];
+    this.bind(); this.renderBadges(); this.paintColors(); this.renderRelays();
+    if (saved && saved.name) this.setMe(saved.name, saved.color);
+    let done; this._loading = new Promise(r => { done = r; });
+    try {
+      for (const r of store.get('cpt_rooms', []).filter(r => r && r.base)) {
+        const d = await this.derive(r.name, r.secret || '');
+        if (!this.rooms.some(x => x.id === d.id)) this.rooms.push({ id: d.id, name: r.name, secret: r.secret || '', base: d.base });
+        this.keys[d.id] = d.key;
+      }
+      if (this.me) await this.migrateV1(saved && saved.id && saved.id !== this.me.id ? saved : null);
+    } catch (e) { console.warn(e); }
+    if (this.me && this.rooms.length) {
+      if (!this.room(this.activeId)) this.activeId = this.rooms[0].id;
+      this.saveMeta(); this.started = true; this.connect();
+    }
+    this._loading = null; done();
+    window.addEventListener('pagehide', () => { if (this.me) for (const r of this.rooms) this.presence(r, 'off'); });
+    window.addEventListener('online', () => { if (this.rooms.length && !this.anyUp()) this.reconnect(); else this.refreshConn(); });
     window.addEventListener('offline', () => this.refreshConn());
-    document.addEventListener('visibilitychange', () => { if (!document.hidden && nav.page === 'chat') this.markRead(); });
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && nav.page === 'chat') this.markRead();
+      if (!document.hidden && this.me) for (const r of this.rooms) this.presence(r, 'on');
+    });
   },
   bind() {
     $('#j-colors').onclick = e => { const x = e.target.closest('[data-c]'); if (!x) return; this._pick = x.dataset.c; if (this.me) this.me.color = x.dataset.c; $$('#j-colors button').forEach(y => y.classList.toggle('on', y === x)); };
-    $('#j-go').onclick = () => this.join($('#j-name').value, $('#j-room').value, $('#j-pass').value, this._pick);
-    ['#j-name', '#j-room', '#j-pass'].forEach(s => $(s).onkeydown = e => { if (e.key === 'Enter') $('#j-go').click(); });
-    $('#j-code-go').onclick = () => {
-      const raw = $('#j-code').value.trim().replace(/^.*?(CP1-[A-Za-z0-9_-]+).*$/s, '$1');
-      try { const o = JSON.parse(this.unb64u(raw.replace(/^CP1-/, ''))); $('#j-room').value = o.r; $('#j-pass').value = o.p; if (!$('#j-name').value.trim()) { $('#j-name').focus(); toast('Code reconnu : entrez votre prénom puis validez.', 'success'); } else $('#j-go').click(); }
-      catch (e) { toast('Code d’invitation invalide.', 'error'); }
-    };
+    $('#j-go').onclick = () => this.join($('#j-name').value, $('#j-room').value, $('#j-secret').value, this._pick);
+    ['#j-name', '#j-room', '#j-secret'].forEach(s => $(s).onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); $('#j-go').click(); } });
     const ta = $('#composer');
     ta.oninput = () => { this.autosize(); this.typingPing(); };
     ta.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); this.sendText(); } };
@@ -2498,7 +3103,7 @@ const Chat = {
     $('#attach-menu').onclick = e => {
       const b = e.target.closest('[data-a]'); if (!b) return; $('#attach-menu').classList.remove('open');
       if (b.dataset.a === 'photo') $('#chat-photo').click();
-      if (b.dataset.a === 'product') { const c = Products.current || (History.all()[0] && { code: History.all()[0].code, name: History.all()[0].name, brand: History.all()[0].brand, image: History.all()[0].img }); if (!c) return toast('Aucun produit scanné pour l’instant.', 'info'); this.send('product', { data: { code: c.code, name: c.name, brand: c.brand, image: c.image, quantity: c.quantity || '', price: c.price ?? null } }); }
+      if (b.dataset.a === 'product') { const h = History.all()[0]; const c = Products.current || (h && { code: h.code, name: h.name, brand: h.brand, image: h.img }); if (!c) return toast('Aucun produit scanné pour l’instant.', 'info'); this.send('product', { data: { code: c.code, name: c.name, brand: c.brand, image: c.image, quantity: c.quantity || '', price: c.price ?? null } }); }
       if (b.dataset.a === 'barcode') this.pickBarcode();
       if (b.dataset.a === 'promo') { const p = Promo.last || store.get('cpt_promos', [])[0]; if (!p) return toast('Aucun calcul de promo pour l’instant.', 'info'); const { type, ...rest } = p; this.send('promo', { data: { ...rest, ptype: type } }); }
     };
@@ -2506,12 +3111,13 @@ const Chat = {
     $('#reply-cancel').onclick = () => this.setReply(null);
     $('#btn-invite').onclick = () => this.invite();
     $('#btn-chat-settings').onclick = () => this.settings();
-    $('#btn-new-room').onclick = () => { $('#j-room').value = ''; $('#j-pass').value = ''; this.showJoin(true); $('#chat-shell').classList.remove('side-open'); };
+    $('#btn-new-room').onclick = () => { $('#j-room').value = ''; $('#j-secret').value = ''; this.showJoin(true); $('#j-room').focus(); $('#chat-shell').classList.remove('side-open'); };
     $('#btn-notif').onclick = async () => {
       if (!('Notification' in window)) return toast('Notifications non prises en charge par ce navigateur.', 'info');
       const p = await Notification.requestPermission();
       toast(p === 'granted' ? 'Alertes activées quand la page est en arrière-plan.' : 'Alertes refusées dans le navigateur.', p === 'granted' ? 'success' : 'info');
     };
+    $('#page-chat').addEventListener('click', e => { if (e.target.closest('[data-retry]')) { this.reconnect(); toast('Nouvelle tentative de connexion…', 'info'); } });
     $('#rooms').onclick = e => { const b = e.target.closest('[data-room]'); if (b) this.switchRoom(b.dataset.room); };
     $('#chat-side-open').onclick = () => $('#chat-shell').classList.add('side-open');
     $('#chat-side-close').onclick = () => $('#chat-shell').classList.remove('side-open');
@@ -2523,10 +3129,15 @@ const Chat = {
       if (t.closest('[data-reply]') && m) return this.setReply(m);
       if (t.closest('[data-copy]') && m) { navigator.clipboard && navigator.clipboard.writeText(m.text || '').then(() => toast('Texte copié.', 'success')); return; }
       if (t.closest('[data-del]') && m) return this.del(id);
-      if (t.closest('.b-meta.fail') && m) { m.status = 'pending'; this.queue.push({ roomId: this.activeId, id }); this.flush(); this.render(); return; }
+      if (t.closest('.b-meta.fail') && m) { m.status = 'pending'; this.render(); this.deliver(this.activeId, m); return; }
       const g = t.closest('[data-goto]'); if (g) { const el = $(`.msg[data-id="${CSS.escape(g.dataset.goto)}"]`); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); } return; }
       const zoom = t.closest('[data-zoom]'); if (zoom) return modal.open(`<div class="img-viewer"><img src="${zoom.src}" alt=""></div><div class="btn-row" style="justify-content:center;margin-top:14px"><button class="btn btn-ghost" data-close>Fermer</button></div>`);
-      const prod = t.closest('[data-open-product]'); if (prod) { nav.go('scanner'); setTimeout(() => Products.show(prod.dataset.openProduct, { noScroll: false }), 350); return; }
+      const prod = t.closest('[data-open-product]');
+      if (prod) {
+        const code = prod.dataset.openProduct; nav.go('scanner');
+        setTimeout(() => (Products.isLocal(code) && !Products.storeInfo(code)) ? Search.run(prod.dataset.name || '') : Products.show(code, { noScroll: false }), 350);
+        return;
+      }
       const bc = t.closest('[data-open-barcode]'); if (bc && m) return Barcodes.full({ digits: m.data.digits, format: m.data.format, name: m.data.name || 'Code-barres' });
       if (msgEl && matchMedia('(hover: none)').matches) { $$('.msg.tools-open').forEach(x => x !== msgEl && x.classList.remove('tools-open')); msgEl.classList.toggle('tools-open'); }
     };
@@ -2554,6 +3165,7 @@ function boot() {
   Scanner.bind();
   Barcodes.bind(); Barcodes.renderHistory();
   Promo.bind(); Promo.renderHistory();
+  Search.bind();
   Chat.init();
 
   const start = (location.hash || '').slice(1);
